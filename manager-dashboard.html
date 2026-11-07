@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Manager Dashboard - Tasty Bites</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f8f9fa;
+        }
+
+        nav {
+            background: #222;
+            color: white;
+            padding: 18px 40px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #e85d04;
+        }
+
+        .manager-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .manager-name {
+            color: #ffb703;
+            font-weight: bold;
+        }
+
+        .logout-btn {
+            background: #e85d04;
+            color: white;
+            border: none;
+            padding: 9px 18px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .logout-btn:hover {
+            background: #d94801;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 35px auto;
+        }
+
+        .welcome-box {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .welcome-box h1 {
+            color: #e85d04;
+            margin-bottom: 12px;
+        }
+
+        .restaurant-info {
+            margin-top: 15px;
+            padding: 18px;
+            background: #fff3e8;
+            border-radius: 10px;
+        }
+
+        .restaurant-info p {
+            margin: 7px 0;
+        }
+
+        .section-title {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .order-box {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-box h2 {
+            color: #e85d04;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .order-card {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            background: #fff;
+        }
+
+        .order-card p {
+            margin: 9px 0;
+            font-size: 16px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: #fff3cd;
+            color: #856404;
+            font-weight: bold;
+        }
+
+        .status-section {
+            margin-top: 18px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+        }
+
+        .status-section label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .status-select,
+        .delivery-select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            font-size: 15px;
+            width: 220px;
+            margin-bottom: 10px;
+        }
+
+        .update-btn {
+            padding: 10px 18px;
+            margin-left: 8px;
+            background: #e85d04;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .update-btn:hover {
+            background: #d94801;
+        }
+
+        .delivery-section {
+            margin-top: 18px;
+            padding: 18px;
+            background: #fff8ef;
+            border-radius: 10px;
+            border: 1px solid #f1d5b5;
+        }
+
+        .delivery-section label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .delivery-btn {
+            padding: 10px 18px;
+            margin-left: 8px;
+            background: #198754;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .delivery-btn:hover {
+            background: #146c43;
+        }
+
+        .delivery-info {
+            margin-top: 12px;
+            padding: 10px;
+            background: #e9f7ef;
+            border-radius: 7px;
+            color: #146c43;
+            font-weight: bold;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            font-size: 18px;
+        }
+
+            .rating-info {
+    margin-top: 15px;
+    padding: 15px;
+    background: #fff8e1;
+    border-radius: 10px;
+}
+
+#restaurantRating {
+    color: #f4b400;
+    font-size: 28px;
+    letter-spacing: 4px;
+    margin: 8px 0;
+}
+
+#ratingSummary {
+    color: #555;
+    font-size: 14px;
+}
+
+
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+
+</head>
+
+<body>
+
+<nav>
+
+    <div class="logo">
+        👨‍🍳 Tasty <span>Bites</span>
+    </div>
+
+    <div class="manager-info">
+
+        <span class="manager-name" id="managerName">
+            Manager
+        </span>
+
+        <button
+            class="logout-btn"
+            onclick="logoutManager()">
+
+            🚪 Logout
+
+        </button>
+
+    </div>
+
+</nav>
+  
+
+
+<div class="container">
+
+    <div class="welcome-box">
+
+        <h1>
+            👋 Welcome,
+            <span id="welcomeName">
+                Manager
+            </span>
+        </h1>
+
+        <p>
+            Welcome to your restaurant manager dashboard.
+        </p>
+
+        <div class="restaurant-info">
+
+            <p>
+                🏪
+                <strong>Restaurant:</strong>
+                <span id="restaurantName">
+                    Loading...
+                </span>
+            </p>
+
+            <p>
+                🆔
+                <strong>Restaurant ID:</strong>
+                <span id="restaurantId">
+                    -
+                </span>
+            </p>
+
+
+            <!-- RESTAURANT STAR RATING -->
+<div class="rating-info">
+    <p><strong>⭐ Restaurant Rating</strong></p>
+
+    <div id="restaurantRating">
+        ☆☆☆☆☆
+    </div>
+
+    <p id="ratingSummary">
+        0.0 / 5 (0 reviews)
+    </p>
+</div>
+   
+        </div>
+
+    </div>
+
+
+    <h2 class="section-title">
+        📦 Restaurant Orders
+    </h2>
+
+
+    <div class="order-box">
+
+        <h2>
+            📦 Restaurant Orders
+        </h2>
+
+        <div id="ordersContainer">
+
+            <div class="empty">
+                Loading orders...
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+
+// =========================================
+// REAL-TIME MANAGER ORDER NOTIFICATION
+// =========================================
+
+let stompClient = null;
+
+function connectOrderNotifications(restaurantId) {
+const socket = new SockJS("http://localhost:8083/ws");
+
+    stompClient = Stomp.over(socket);
+
+    stompClient.connect({}, function () {
+
+        console.log("WebSocket connected!");
+
+        stompClient.subscribe(
+            "/topic/orders/" + restaurantId,
+            function (message) {
+                 
+
+
+                console.log("🔔 WebSocket message received:", message.body);
+                const newOrder = JSON.parse(message.body);
+
+                alert(
+                    "🔔 New Order Received!\n" +
+                    "Order ID: " + newOrder.id
+                );
+
+                loadRestaurantOrders(restaurantId);
+            }
+        );
+
+    }, function (error) {
+
+        console.error("WebSocket connection error:", error);
+
+    });
+}
+
+
+
+/* =========================================
+   PAGE LOAD
+========================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    async function () {
+
+        const managerData =
+            localStorage.getItem("loggedInManager");
+
+        if (!managerData) {
+
+            alert(
+                "❌ Please login as manager first."
+            );
+
+            window.location.href =
+                "manager-login.html";
+
+            return;
+        }
+
+        const manager =
+            JSON.parse(managerData);
+
+
+        document.getElementById(
+            "managerName"
+        ).textContent =
+            "👨‍💼 " + manager.name;
+
+
+        document.getElementById(
+            "welcomeName"
+        ).textContent =
+            manager.name;
+
+
+        document.getElementById(
+            "restaurantId"
+        ).textContent =
+            manager.restaurantId;
+
+
+        /* LOAD RESTAURANT */
+
+        try {
+
+            const response =
+                await fetch(
+                    "http://localhost:8085/api/restaurants/"
+                    + manager.restaurantId
+                );
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Restaurant not found"
+                );
+
+            }
+
+            const restaurant =
+                await response.json();
+
+
+            document.getElementById(
+                "restaurantName"
+            ).textContent =
+                restaurant.name;
+
+                 // DISPLAY RESTAURANT STAR RATING
+const averageRating =
+    Number(restaurant.averageRating) || 0;
+
+const totalReviews =
+    Number(restaurant.totalReviews) || 0;
+
+const fullStars = Math.floor(averageRating);
+
+const emptyStars = 5 - fullStars;
+
+document.getElementById("restaurantRating").textContent =
+    "★".repeat(fullStars) +
+    "☆".repeat(emptyStars);
+
+document.getElementById("ratingSummary").textContent =
+    averageRating.toFixed(1) +
+    " / 5 (" + totalReviews + " reviews)";
+
+
+
+
+
+        } catch (error) {
+
+            console.error(
+                "Restaurant loading error:",
+                error
+            );
+
+            document.getElementById(
+                "restaurantName"
+            ).textContent =
+                "Unable to load restaurant";
+        }
+
+       /* LOAD ORDERS */
+
+loadRestaurantOrders(
+    manager.restaurantId
+);
+console.log(
+    "Manager subscribed restaurant ID:",
+    manager.restaurantId
+);
+connectOrderNotifications(
+    manager.restaurantId
+);
+
+}
+);
+
+/* =========================================
+   LOAD RESTAURANT ORDERS
+========================================= */
+
+async function loadRestaurantOrders(
+    restaurantId
+) 
+
+
+
+{
+
+    const container =
+        document.getElementById(
+            "ordersContainer"
+        );
+
+    
+    try {
+
+        const response =
+            await fetch(
+                "http://localhost:8085/api/orders/restaurant/"
+                + restaurantId
+            );
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Unable to load orders"
+            );
+        }
+
+
+        const orders =
+            await response.json();
+            console.log("Manager Restaurant ID:", restaurantId);
+            console.log("Orders received:", orders);
+            orders.forEach(order => {
+            console.log(
+        "Order ID:", order.id,
+        "| Delivery Date:", order.deliveryDate,
+        "| Delivery Time:", order.deliveryTime
+    );
+});
+
+
+        if (orders.length === 0) {
+
+            container.innerHTML = `
+
+                <div class="empty">
+
+                    📦 No orders available.
+
+                </div>
+
+            `;
+
+            return;
+        }
+
+
+        container.innerHTML =
+
+            orders.map(order => {
+
+                /* =========================
+                   DELIVERY DURATION
+                ========================== */
+
+                let durationText =
+                    "Not Set";
+
+
+                if (
+                    order.deliveryDurationMinutes !== null
+                    &&
+                    order.deliveryDurationMinutes !== undefined
+                ) {
+
+                    if (
+                        Number(
+                            order.deliveryDurationMinutes
+                        ) === 180
+                    ) {
+
+                        durationText =
+                            "3 Hours";
+
+                    } else {
+
+                        durationText =
+                            order.deliveryDurationMinutes
+                            + " Minutes";
+
+                    }
+
+                }
+
+
+                /* =========================
+                   DELIVERY INFO
+                ========================== */
+
+                let deliveryInfo = "";
+
+
+                if (
+                    order.deliveryDate
+                    &&
+                    order.deliveryTime
+                ) {
+
+                    deliveryInfo = `
+
+                        <div class="delivery-info">
+
+                            📅 Delivery Date:
+                            ${order.deliveryDate}
+
+                            <br>
+
+                            ⏰ Delivery Time:
+                            ${order.deliveryTime}
+
+                            <br>
+
+                            ⏱️ Duration:
+                            ${durationText}
+
+                        </div>
+
+                    `;
+
+                }
+
+
+                return `
+
+                    <div class="order-card">
+
+                        <p>
+                            🆔
+                            <strong>
+                                Order #${order.id}
+                            </strong>
+                        </p>
+
+
+                        <p>
+                            👤
+                            <strong>
+                                Customer:
+                            </strong>
+
+                            ${order.customerName}
+                        </p>
+
+
+                        <p>
+                            📞
+                            <strong>
+                                Phone:
+                            </strong>
+
+                            ${order.phone}
+                        </p>
+
+
+                        <p>
+                            🍴
+                            <strong>
+                                Food:
+                            </strong>
+
+                            ${order.foodName}
+                        </p>
+
+
+                        <p>
+                            🔢
+                            <strong>
+                                Quantity:
+                            </strong>
+
+                            ${order.quantity}
+                        </p>
+
+
+                        <p>
+                            💰
+                            <strong>
+                                Total:
+                            </strong>
+
+                            ₹${order.totalPrice}
+                        </p>
+
+
+                        <p>
+                            📍
+                            <strong>
+                                Address:
+                            </strong>
+
+                            ${order.address}
+                        </p>
+
+
+                        <p>
+                            📌
+                            <strong>
+                                Current Status:
+                            </strong>
+
+                            <span class="status-badge">
+
+                                ${order.status}
+
+                            </span>
+
+                        </p>
+
+
+                        <!-- STATUS -->
+
+                        <div class="status-section">
+
+                            <label>
+
+                                🔄 Update Order Status
+
+                            </label>
+
+
+                            <select
+                                class="status-select"
+                                id="status-${order.id}"
+                            >
+
+                                <option value="Pending">
+                                    Pending
+                                </option>
+
+                                <option value="Preparing">
+                                    Preparing
+                                </option>
+
+                                <option value="Ready">
+                                    Ready
+                                </option>
+
+                                <option value="Out for Delivery">
+                                    Out for Delivery
+                                </option>
+
+                                <option value="Delivered">
+                                    Delivered
+                                </option>
+
+                            </select>
+
+
+                            <button
+                                class="update-btn"
+                                onclick="updateOrderStatus(${order.id})"
+                            >
+
+                                Update Status
+
+                            </button>
+
+                        </div>
+
+
+                        <!-- DELIVERY -->
+
+                        <div class="delivery-section">
+
+                            <label>
+
+                                🚚 Select Delivery Time
+
+                            </label>
+
+
+                            <select
+                                class="delivery-select"
+                                id="delivery-${order.id}"
+                            >
+
+                                <option value="10">
+                                    10 Minutes
+                                </option>
+
+                                <option value="45">
+                                    45 Minutes
+                                </option>
+
+                                <option value="180">
+                                    3 Hours
+                                </option>
+
+                            </select>
+
+
+                            <button
+                                class="delivery-btn"
+                                onclick="setDelivery(${order.id})"
+                            >
+
+                                🚚 Set Delivery
+
+                            </button>
+
+
+                            ${deliveryInfo}
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }).join("");
+
+
+        /* SET CURRENT STATUS */
+
+        orders.forEach(order => {
+
+            const select =
+                document.getElementById(
+                    "status-" + order.id
+                );
+
+            if (select) {
+
+                select.value =
+                    order.status;
+
+            }
+
+        });
+
+
+    } catch (error) {
+
+        console.error(
+            "Order loading error:",
+            error
+        );
+
+        container.innerHTML = `
+
+            <div class="empty">
+
+                ❌ Unable to load orders.
+
+                <br><br>
+
+                Please make sure
+                OrderService and API Gateway
+                are running.
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =========================================
+   UPDATE ORDER STATUS
+========================================= */
+
+async function updateOrderStatus(
+    orderId
+) {
+
+    const select =
+        document.getElementById(
+            "status-" + orderId
+        );
+
+
+    const newStatus =
+        select.value;
+
+
+    try {
+
+        const response =
+            await fetch(
+                "http://localhost:8085/api/orders/"
+                + orderId
+                + "/status",
+                {
+
+                    method: "PUT",
+
+                    headers: {
+
+                        "Content-Type":
+                            "text/plain"
+
+                    },
+
+                    body: newStatus
+
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Status update failed"
+            );
+
+        }
+
+
+        alert(
+            "✅ Order status updated successfully!"
+        );
+
+
+        reloadOrders();
+
+
+    } catch (error) {
+
+        console.error(
+            "Status update error:",
+            error
+        );
+
+
+        alert(
+            "❌ Failed to update order status."
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   SET DELIVERY
+========================================= */
+
+async function setDelivery(
+    orderId
+) {
+
+    const select =
+        document.getElementById(
+            "delivery-" + orderId
+        );
+
+
+    const minutes =
+        Number(select.value);
+
+
+    /* CURRENT TIME */
+
+    const now =
+        new Date();
+
+
+    /* DELIVERY END TIME */
+
+    const deliveryDateTime =
+        new Date(
+            now.getTime()
+            + (minutes * 60 * 1000)
+        );
+
+
+    /* DATE */
+
+    const year =
+        deliveryDateTime.getFullYear();
+
+
+    const month =
+        String(
+            deliveryDateTime.getMonth() + 1
+        ).padStart(2, "0");
+
+
+    const day =
+        String(
+            deliveryDateTime.getDate()
+        ).padStart(2, "0");
+
+
+    const deliveryDate =
+        year
+        + "-"
+        + month
+        + "-"
+        + day;
+
+
+    /* TIME */
+
+    let hours =
+        deliveryDateTime.getHours();
+
+
+    const mins =
+        String(
+            deliveryDateTime.getMinutes()
+        ).padStart(2, "0");
+
+
+    const ampm =
+        hours >= 12
+        ? "PM"
+        : "AM";
+
+
+    hours =
+        hours % 12;
+
+
+    hours =
+        hours || 12;
+
+
+    const deliveryTime =
+        String(hours)
+        + ":"
+        + mins
+        + " "
+        + ampm;
+
+
+    /* REQUEST BODY */
+
+    const deliveryData = {
+
+        deliveryDate:
+            deliveryDate,
+
+        deliveryTime:
+            deliveryTime,
+
+        deliveryDurationMinutes:
+            String(minutes)
+
+    };
+
+
+    console.log(
+        "Sending Delivery Data:",
+        deliveryData
+    );
+
+
+    try {
+
+        const response =
+            await fetch(
+                "http://localhost:8085/api/orders/"
+                + orderId
+                + "/delivery",
+                {
+
+                    method: "PUT",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body:
+                        JSON.stringify(
+                            deliveryData
+                        )
+
+                }
+            );
+
+
+        const responseText =
+            await response.text();
+
+
+        console.log(
+            "Delivery API Response:",
+            responseText
+        );
+
+
+        if (!response.ok) {
+
+            console.error(
+                "Delivery API Error:",
+                responseText
+            );
+
+            throw new Error(
+                "Delivery update failed"
+            );
+
+        }
+
+
+        const data =
+            JSON.parse(responseText);
+
+
+        console.log(
+            "Saved Order:",
+            data
+        );
+          console.log("Saved delivery time:", data.deliveryTime);
+
+
+        alert(
+            "🚚 Delivery set successfully!\n\n"
+            + "Duration: "
+            + (
+                minutes === 180
+                ? "3 Hours"
+                : minutes + " Minutes"
+            )
+            + "\n"
+            + "Delivery Time: "
+            + deliveryDate
+            + " "
+            + deliveryTime
+        );
+
+
+        /* RELOAD */
+
+        await reloadOrders();
+
+
+    } catch (error) {
+
+        console.error(
+            "Delivery update error:",
+            error
+        );
+
+
+        alert(
+            "❌ Failed to set delivery.\n\n"
+            + error.message
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   RELOAD ORDERS
+========================================= */
+
+async function reloadOrders() {
+
+    const managerData =
+        localStorage.getItem(
+            "loggedInManager"
+        );
+
+
+    if (!managerData) {
+
+        return;
+
+    }
+
+
+    const manager =
+        JSON.parse(managerData);
+
+
+    await loadRestaurantOrders(
+        manager.restaurantId
+    );
+
+}
+
+
+/* =========================================
+   AUTOMATIC REFRESH
+   EVERY 10 SECONDS
+========================================= */
+
+setInterval(
+    async function () {
+
+        const managerData =
+            localStorage.getItem(
+                "loggedInManager"
+            );
+
+
+        if (!managerData) {
+
+            return;
+
+        }
+
+
+        const manager =
+            JSON.parse(managerData);
+
+
+        await loadRestaurantOrders(
+            manager.restaurantId
+        );
+
+    },
+    10000
+);
+
+
+/* =========================================
+   LOGOUT
+========================================= */
+
+function logoutManager() {
+
+    localStorage.removeItem(
+        "loggedInManager"
+    );
+
+
+    window.location.href =
+        "manager-login.html";
+
+}
+
+</script>
+
+</body>
+
+</html>

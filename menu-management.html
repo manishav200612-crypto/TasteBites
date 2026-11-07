@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Tasty Bites - Menu Management</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+
+        body {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f8f3e8,
+                    #fffaf0
+                );
+
+            color: #183528;
+
+            min-height: 100vh;
+        }
+
+
+        /* ================= NAVBAR ================= */
+
+        nav {
+
+            background: #0b1a13;
+
+            padding: 18px 50px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,0.15);
+        }
+
+
+        .logo {
+
+            color: white;
+
+            font-size: 26px;
+
+            font-weight: bold;
+        }
+
+
+        .logo span {
+
+            color: #e89b2d;
+        }
+
+
+        .back-btn {
+
+            text-decoration: none;
+
+            color: white;
+
+            background: #e89b2d;
+
+            padding: 10px 20px;
+
+            border-radius: 25px;
+
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+
+        .back-btn:hover {
+
+            background: #d4871e;
+
+            transform: translateY(-2px);
+        }
+
+
+        /* ================= CONTAINER ================= */
+
+        .container {
+
+            max-width: 1200px;
+
+            margin: auto;
+
+            padding: 50px 25px;
+        }
+
+
+        /* ================= TITLE ================= */
+
+        .title {
+
+            text-align: center;
+
+            margin-bottom: 40px;
+        }
+
+
+        .title h1 {
+
+            font-size: 38px;
+
+            color: #183528;
+
+            margin-bottom: 10px;
+        }
+
+
+        .title h1 span {
+
+            color: #e89b2d;
+        }
+
+
+        .title p {
+
+            color: #6f675c;
+
+            font-size: 16px;
+        }
+
+
+        /* ================= ADD FORM ================= */
+
+        .form-card {
+
+            background: #ffffff;
+
+            padding: 30px;
+
+            border-radius: 25px;
+
+            border: 1px solid #eadfce;
+
+            box-shadow:
+                0 12px 35px
+                rgba(30,50,35,0.10);
+
+            margin-bottom: 40px;
+        }
+
+
+        .form-card h2 {
+
+            color: #183528;
+
+            margin-bottom: 25px;
+        }
+
+
+        .form-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 20px;
+        }
+
+
+        .form-group label {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            color: #3a2f24;
+        }
+
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+
+            width: 100%;
+
+            padding: 13px 15px;
+
+            border: 1px solid #ddd0bb;
+
+            border-radius: 10px;
+
+            outline: none;
+
+            font-size: 15px;
+
+            background: #fffdf8;
+
+            color: #3a2f24;
+        }
+
+
+        .form-group textarea {
+
+            height: 100px;
+
+            resize: vertical;
+        }
+
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+
+            border-color: #e89b2d;
+        }
+
+
+        .full-width {
+
+            grid-column: 1 / -1;
+        }
+
+
+        .add-btn {
+
+            margin-top: 20px;
+
+            padding: 13px 30px;
+
+            border: none;
+
+            border-radius: 25px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #e89b2d,
+                    #d4871e
+                );
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+
+        .add-btn:hover {
+
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 8px 20px
+                rgba(212,135,30,0.25);
+        }
+
+
+        /* ================= MENU TABLE ================= */
+
+        .menu-card {
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 25px;
+
+            border: 1px solid #eadfce;
+
+            box-shadow:
+                0 12px 35px
+                rgba(30,50,35,0.10);
+        }
+
+
+        .menu-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 25px;
+        }
+
+
+        .menu-header h2 {
+
+            color: #183528;
+        }
+
+
+        .menu-count {
+
+            color: #e89b2d;
+
+            font-weight: bold;
+        }
+
+
+        .table-container {
+
+            overflow-x: auto;
+        }
+
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 850px;
+        }
+
+
+        thead {
+
+            background: #183528;
+
+            color: #fff8e8;
+        }
+
+
+        th {
+
+            padding: 15px;
+
+            text-align: left;
+
+            font-size: 14px;
+        }
+
+
+        td {
+
+            padding: 15px;
+
+            border-bottom:
+                1px solid #eee5d5;
+
+            color: #4b443b;
+
+            font-size: 14px;
+        }
+
+
+        tbody tr:hover {
+
+            background: #fffaf0;
+        }
+
+
+        /* ================= CATEGORY ================= */
+
+        .category {
+
+            background: #fff0d4;
+
+            color: #b56c00;
+
+            padding: 6px 12px;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+
+            font-weight: bold;
+        }
+
+
+        /* ================= ACTION BUTTONS ================= */
+
+        .edit-btn,
+        .delete-btn {
+
+            border: none;
+
+            padding: 8px 14px;
+
+            border-radius: 18px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            margin-right: 5px;
+        }
+
+
+        .edit-btn {
+
+            background: #183528;
+
+            color: white;
+        }
+
+
+        .delete-btn {
+
+            background: #e89b2d;
+
+            color: white;
+        }
+
+
+        .edit-btn:hover,
+        .delete-btn:hover {
+
+            opacity: 0.85;
+        }
+
+
+        /* ================= FOOTER ================= */
+
+        footer {
+
+            margin-top: 50px;
+
+            background: #0b1a13;
+
+            color: #c9d3cc;
+
+            text-align: center;
+
+            padding: 20px;
+
+            font-size: 14px;
+        }
+
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 700px) {
+
+            nav {
+
+                padding: 15px 20px;
+            }
+
+
+            .logo {
+
+                font-size: 21px;
+            }
+
+
+            .container {
+
+                padding: 40px 18px;
+            }
+
+
+            .title h1 {
+
+                font-size: 30px;
+            }
+
+
+            .form-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .full-width {
+
+                grid-column: auto;
+            }
+
+
+            .menu-header {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 8px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav>
+
+        <div class="logo">
+
+            🍴 Tasty<span>Bites</span>
+
+        </div>
+
+
+        <a
+            href="admin-dashboard.html"
+            class="back-btn">
+
+            ← Dashboard
+
+        </a>
+
+    </nav>
+
+
+
+    <!-- ================= MAIN ================= -->
+
+    <div class="container">
+
+
+        <div class="title">
+
+            <h1>
+
+                Menu <span>Management</span>
+
+            </h1>
+
+            <p>
+
+                Add, edit and manage your restaurant menu
+
+            </p>
+
+        </div>
+
+
+
+        <!-- ================= ADD MENU FORM ================= -->
+
+        <div class="form-card">
+
+            <h2>
+                ➕ Add New Menu Item
+            </h2>
+
+
+            <div class="form-grid">
+
+
+                <div class="form-group">
+
+                    <label>
+                        Food Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        placeholder="Enter food name">
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label>
+                        Price
+                    </label>
+
+                    <input
+                        type="number"
+                        id="price"
+                        placeholder="Enter price">
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label>
+                        Category
+                    </label>
+
+                    <select id="category">
+
+                        <option value="">
+                            Select Category
+                        </option>
+
+                        <option value="Main Course">
+                            Main Course
+                        </option>
+
+                        <option value="Fast Food">
+                            Fast Food
+                        </option>
+
+                        <option value="South Indian">
+                            South Indian
+                        </option>
+
+                        <option value="Chinese">
+                            Chinese
+                        </option>
+
+                        <option value="Non-Veg">
+                            Non-Veg
+                        </option>
+
+                        <option value="Starters">
+                            Starters
+                        </option>
+
+                        <option value="Dessert">
+                            Dessert
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <div class="form-group full-width">
+
+                    <label>
+                        Description
+                    </label>
+
+                    <textarea
+                        id="description"
+                        placeholder="Enter food description"></textarea>
+
+                </div>
+
+            </div>
+
+
+            <button
+                class="add-btn"
+                onclick="addMenuItem()">
+
+                ➕ Add Menu Item
+
+            </button>
+
+        </div>
+
+
+
+        <!-- ================= MENU LIST ================= -->
+
+        <div class="menu-card">
+
+
+            <div class="menu-header">
+
+                <h2>
+                    🍽️ All Menu Items
+                </h2>
+
+                <span
+                    class="menu-count"
+                    id="menuCount">
+
+                    0 Items
+
+                </span>
+
+            </div>
+
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ID</th>
+
+                            <th>Food Name</th>
+
+                            <th>Price</th>
+
+                            <th>Category</th>
+
+                            <th>Description</th>
+
+                            <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="menuTableBody">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        © 2026 Tasty Bites | Menu Management
+
+    </footer>
+
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+
+        /* ================= LOAD MENU ================= */
+
+        async function loadMenu() {
+
+            try {
+
+                const response =
+                    await fetch(
+                        "http://localhost:8085/api/menu"
+                    );
+
+
+                const menu =
+                    await response.json();
+
+
+                const tableBody =
+                    document.getElementById(
+                        "menuTableBody"
+                    );
+
+
+                tableBody.innerHTML = "";
+
+
+                document.getElementById(
+                    "menuCount"
+                ).textContent =
+                    menu.length + " Items";
+
+
+                menu.forEach(function(item) {
+
+
+                    const row =
+                        document.createElement("tr");
+
+
+                    row.innerHTML = `
+
+                        <td>
+                            ${item.id}
+                        </td>
+
+                        <td>
+                            ${item.name}
+                        </td>
+
+                        <td>
+                            ₹${item.price}
+                        </td>
+
+                        <td>
+
+                            <span class="category">
+
+                                ${item.category}
+
+                            </span>
+
+                        </td>
+
+                        <td>
+                            ${item.description}
+                        </td>
+
+                        <td>
+
+                            <button
+                                class="edit-btn"
+                                onclick="editMenuItem(
+                                    ${item.id},
+                                    '${item.name.replace(/'/g, "\\'")}',
+                                    ${item.price},
+                                    '${item.category.replace(/'/g, "\\'")}',
+                                    '${item.description.replace(/'/g, "\\'")}'
+                                )">
+
+                                ✏️ Edit
+
+                            </button>
+
+
+                            <button
+                                class="delete-btn"
+                                onclick="deleteMenuItem(${item.id})">
+
+                                🗑️ Delete
+
+                            </button>
+
+                        </td>
+
+                    `;
+
+
+                    tableBody.appendChild(row);
+
+                });
+
+
+            } catch (error) {
+
+                console.error(
+                    "Error loading menu:",
+                    error
+                );
+
+            }
+
+        }
+
+
+
+        /* ================= ADD MENU ================= */
+
+        async function addMenuItem() {
+
+
+            const name =
+                document.getElementById("name").value;
+
+
+            const price =
+                document.getElementById("price").value;
+
+
+            const category =
+                document.getElementById("category").value;
+
+
+            const description =
+                document.getElementById("description").value;
+
+
+
+            if (
+                name === "" ||
+                price === "" ||
+                category === "" ||
+                description === ""
+            ) {
+
+                alert(
+                    "Please fill all fields!"
+                );
+
+                return;
+
+            }
+
+
+
+            const menuData = {
+
+                name: name,
+
+                price: Number(price),
+
+                category: category,
+
+                description: description
+
+            };
+
+
+
+            try {
+
+
+                const response =
+                    await fetch(
+                        "http://localhost:8085/api/menu",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify(menuData)
+                        }
+                    );
+
+
+                if (response.ok) {
+
+                    alert(
+                        "✅ Menu item added successfully!"
+                    );
+
+
+                    document.getElementById(
+                        "name"
+                    ).value = "";
+
+
+                    document.getElementById(
+                        "price"
+                    ).value = "";
+
+
+                    document.getElementById(
+                        "category"
+                    ).value = "";
+
+
+                    document.getElementById(
+                        "description"
+                    ).value = "";
+
+
+                    loadMenu();
+
+                } else {
+
+                    alert(
+                        "❌ Failed to add menu item."
+                    );
+
+                }
+
+
+            } catch (error) {
+
+                alert(
+                    "❌ Backend connection error."
+                );
+
+                console.error(error);
+
+            }
+
+        }
+
+
+
+        /* ================= DELETE ================= */
+
+        async function deleteMenuItem(id) {
+
+
+            const confirmDelete =
+                confirm(
+                    "Are you sure you want to delete this menu item?"
+                );
+
+
+            if (!confirmDelete) {
+
+                return;
+
+            }
+
+
+            try {
+
+
+                const response =
+                    await fetch(
+                        "http://localhost:8085/api/menu/" + id,
+                        {
+                            method: "DELETE"
+                        }
+                    );
+
+
+                if (response.ok) {
+
+                    alert(
+                        "✅ Menu item deleted!"
+                    );
+
+                    loadMenu();
+
+                } else {
+
+                    alert(
+                        "❌ Failed to delete menu item."
+                    );
+
+                }
+
+
+            } catch (error) {
+
+                alert(
+                    "❌ Backend connection error."
+                );
+
+            }
+
+        }
+
+
+
+        /* ================= EDIT ================= */
+
+        async function editMenuItem(
+            id,
+            oldName,
+            oldPrice,
+            oldCategory,
+            oldDescription
+        ) {
+
+
+            const name =
+                prompt(
+                    "Enter Food Name:",
+                    oldName
+                );
+
+
+            if (name === null) return;
+
+
+            const price =
+                prompt(
+                    "Enter Price:",
+                    oldPrice
+                );
+
+
+            if (price === null) return;
+
+
+            const category =
+                prompt(
+                    "Enter Category:",
+                    oldCategory
+                );
+
+
+            if (category === null) return;
+
+
+            const description =
+                prompt(
+                    "Enter Description:",
+                    oldDescription
+                );
+
+
+            if (description === null) return;
+
+
+
+            const menuData = {
+
+                name: name,
+
+                price: Number(price),
+
+                category: category,
+
+                description: description
+
+            };
+
+
+
+            try {
+
+
+                const response =
+                    await fetch(
+                        "http://localhost:8085/api/menu/" + id,
+                        {
+                            method: "PUT",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify(menuData)
+                        }
+                    );
+
+
+                if (response.ok) {
+
+                    alert(
+                        "✅ Menu item updated successfully!"
+                    );
+
+                    loadMenu();
+
+                } else {
+
+                    alert(
+                        "❌ Failed to update menu item."
+                    );
+
+                }
+
+
+            } catch (error) {
+
+                alert(
+                    "❌ Backend connection error."
+                );
+
+                console.error(error);
+
+            }
+
+        }
+
+
+
+        /* ================= INITIAL LOAD ================= */
+
+        loadMenu();
+
+    </script>
+
+
+</body>
+
+</html>

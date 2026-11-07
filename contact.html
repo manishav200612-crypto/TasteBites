@@ -1,0 +1,2416 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Contact & Place Order - Tasty Bites</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #fff8ef;
+            color: #222;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        nav {
+            background: #222;
+            color: white;
+            padding: 15px 30px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #ff5722;
+        }
+
+        nav ul {
+            list-style: none;
+
+            display: flex;
+            gap: 18px;
+
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        nav ul li a:hover {
+            color: #ff5722;
+        }
+
+        /* ================= MAIN ================= */
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+
+            margin: 40px auto;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title h1 {
+            font-size: 32px;
+            color: #ff5722;
+        }
+
+        .page-title p {
+            margin-top: 8px;
+            color: #666;
+        }
+
+        /* ================= ORDER SECTION ================= */
+
+        .order-section {
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 3px 15px rgba(0, 0, 0, 0.1);
+
+            margin-bottom: 35px;
+        }
+
+        .order-section h2 {
+            color: #ff5722;
+            margin-bottom: 20px;
+        }
+
+        /* ================= CART ================= */
+
+        #cartItems {
+            margin-bottom: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+
+            border-bottom: 1px solid #ddd;
+
+            padding: 15px 0;
+
+            gap: 15px;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-info h3 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .cart-item-info p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .quantity-box {
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+        }
+
+        .quantity-box button {
+            width: 30px;
+            height: 30px;
+
+            border: none;
+
+            background: #ff5722;
+            color: white;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+
+            font-size: 18px;
+        }
+
+        .quantity-box button:hover {
+            background: #e64a19;
+        }
+
+        .remove-btn {
+            background: #dc3545 !important;
+            font-size: 14px !important;
+        }
+
+        .item-price {
+            font-weight: bold;
+
+            color: #ff5722;
+
+            min-width: 80px;
+
+            text-align: right;
+        }
+
+        .total-box {
+            text-align: right;
+
+            font-size: 21px;
+
+            font-weight: bold;
+
+            margin-top: 20px;
+
+            color: #222;
+        }
+
+        /* ================= FORM ================= */
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+
+            font-weight: bold;
+
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+
+            width: 100%;
+
+            padding: 13px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 7px;
+
+            font-size: 15px;
+
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+
+            border-color: #ff5722;
+        }
+
+        .form-group textarea {
+
+            resize: vertical;
+
+            min-height: 100px;
+        }
+
+        /* ================= BUTTON ================= */
+
+        .place-order-btn {
+
+            background: #ff5722;
+
+            color: white;
+
+            border: none;
+
+            padding: 13px 25px;
+
+            border-radius: 7px;
+
+            font-size: 16px;
+
+            cursor: pointer;
+
+            margin-top: 10px;
+        }
+
+        .place-order-btn:hover {
+
+            background: #e64a19;
+        }
+
+        /* =====================================================
+           LIVE ORDER STATUS
+        ===================================================== */
+
+        #orderStatusSection {
+
+            display: none;
+
+            margin-top: 30px;
+
+            padding: 25px;
+
+            background: #fffaf4;
+
+            border: 1px solid #ffd5bd;
+
+            border-radius: 12px;
+        }
+
+        .status-heading {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-bottom: 20px;
+        }
+
+        .status-heading h2 {
+
+            margin: 0;
+
+            color: #ff5722;
+        }
+
+        .order-id {
+
+            background: #222;
+
+            color: white;
+
+            padding: 7px 12px;
+
+            border-radius: 20px;
+
+            font-size: 13px;
+        }
+
+        /* ================= CURRENT STATUS ================= */
+
+        .current-status {
+
+            text-align: center;
+
+            padding: 20px;
+
+            background: white;
+
+            border-radius: 10px;
+
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .status-icon {
+
+            font-size: 45px;
+
+            margin-bottom: 8px;
+        }
+
+        #currentStatus {
+
+            font-size: 25px;
+
+            font-weight: bold;
+
+            color: #ff5722;
+        }
+
+        #statusMessage {
+
+            margin-top: 7px;
+
+            color: #666;
+
+            font-size: 14px;
+        }
+
+        /* ================= STATUS STEPS ================= */
+
+        .status-steps {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            position: relative;
+
+            margin: 30px 5px 20px;
+        }
+
+        .status-steps::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 20px;
+
+            left: 5%;
+
+            right: 5%;
+
+            height: 4px;
+
+            background: #ddd;
+
+            z-index: 0;
+        }
+
+        .status-step {
+
+            position: relative;
+
+            z-index: 1;
+
+            text-align: center;
+
+            width: 20%;
+        }
+
+        .step-circle {
+
+            width: 42px;
+
+            height: 42px;
+
+            border-radius: 50%;
+
+            background: #ddd;
+
+            color: #777;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            margin: auto;
+
+            font-size: 19px;
+
+            border: 3px solid white;
+        }
+
+        .status-step.active .step-circle {
+
+            background: #ff5722;
+
+            color: white;
+
+            box-shadow:
+                0 0 0 2px #ff5722;
+        }
+
+        .status-step.completed .step-circle {
+
+            background: #28a745;
+
+            color: white;
+        }
+
+        .step-name {
+
+            margin-top: 9px;
+
+            font-size: 12px;
+
+            font-weight: bold;
+        }
+
+        /* ================= PROGRESS ================= */
+
+        .progress-area {
+
+            margin-top: 25px;
+        }
+
+        .progress-top {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            margin-bottom: 8px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+        }
+
+        .progress-bar {
+
+            width: 100%;
+
+            height: 10px;
+
+            background: #ddd;
+
+            border-radius: 10px;
+
+            overflow: hidden;
+        }
+
+        #progressFill {
+
+            width: 0%;
+
+            height: 100%;
+
+            background: #ff5722;
+
+            transition: width 0.5s ease;
+        }
+
+        /* ================= CONTACT ================= */
+
+        .contact-section {
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 3px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-section h2 {
+
+            color: #ff5722;
+
+            margin-bottom: 20px;
+        }
+
+        /* ================= MESSAGES ================= */
+
+        .success-message {
+
+            background: #d4edda;
+
+            color: #155724;
+
+            padding: 15px;
+
+            border-radius: 7px;
+
+            margin-top: 15px;
+
+            display: none;
+        }
+
+        .error-message {
+
+            background: #f8d7da;
+
+            color: #721c24;
+
+            padding: 15px;
+
+            border-radius: 7px;
+
+            margin-top: 15px;
+
+            display: none;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 700px) {
+
+            nav {
+
+                flex-direction: column;
+
+                gap: 15px;
+            }
+
+            nav ul {
+
+                justify-content: center;
+            }
+
+            .container {
+
+                width: 95%;
+            }
+
+            .order-section,
+            .contact-section {
+
+                padding: 20px;
+            }
+
+            .cart-item {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+
+            .item-price {
+
+                text-align: left;
+            }
+
+            .status-steps {
+
+                flex-direction: column;
+
+                gap: 15px;
+            }
+
+            .status-steps::before {
+
+                display: none;
+            }
+
+            .status-step {
+
+                width: 100%;
+
+                display: flex;
+
+                align-items: center;
+
+                gap: 10px;
+
+                text-align: left;
+            }
+
+            .step-circle {
+
+                margin: 0;
+
+                flex-shrink: 0;
+            }
+
+            .step-name {
+
+                margin-top: 0;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav>
+
+        <div class="logo">
+            👨‍🍳 Tasty <span>Bites</span>
+        </div>
+
+        <ul>
+
+            <li>
+                <a href="index.html">
+                    Home
+                </a>
+            </li>
+
+            <li>
+                <a href="menu.html">
+                    Menu
+                </a>
+            </li>
+
+            <li>
+                <a href="cart.html">
+                    🛒 Cart
+                </a>
+            </li>
+
+            <li>
+                <a href="my-orders.html">
+                    📦 My Orders
+                </a>
+            </li>
+
+        </ul>
+
+    </nav>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <div class="container">
+
+
+        <div class="page-title">
+
+            <h1>
+                🍽️ Place Your Order
+            </h1>
+
+            <p>
+                Complete your details and place your food order
+            </p>
+
+        </div>
+
+
+        <!-- ================= ORDER SECTION ================= -->
+
+        <div class="order-section">
+
+
+            <h2>
+                🛒 Your Order
+            </h2>
+
+
+            <div id="cartItems"></div>
+
+
+            <div class="total-box">
+
+                Total: ₹
+                <span id="totalAmount">
+                    0
+                </span>
+
+            </div>
+
+
+            <!-- ================= ORDER FORM ================= -->
+
+            <form id="orderForm">
+
+
+                <div class="form-group">
+
+                    <label for="customerName">
+                        Customer Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="customerName"
+                        placeholder="Enter your name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="phone">
+                        Phone Number
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="phone"
+                        placeholder="Enter phone number"
+                        pattern="[0-9]{10}"
+                        maxlength="10"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="address">
+                        Delivery Address
+                    </label>
+
+                    <textarea
+                        id="address"
+                        placeholder="Enter delivery address"
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="deliveryDate">
+                        Delivery Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="deliveryDate"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- ================= DURATION ================= -->
+
+                <div class="form-group">
+
+                    <label for="deliveryDuration">
+                        Delivery Duration
+                    </label>
+
+                    <select
+                        id="deliveryDuration"
+                        required
+                    >
+
+                        <option value="">
+                            -- Select Delivery Duration --
+                        </option>
+
+                        <option value="10">
+                            10 Minutes
+                        </option>
+
+                        <option value="45">
+                            45 Minutes
+                        </option>
+
+                        <option value="60">
+                            1 Hour
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- ================= PLACE ORDER ================= -->
+
+                <button
+                    type="submit"
+                    class="place-order-btn"
+                >
+
+                    🛒 Place Order
+
+                </button>
+
+
+            </form>
+
+
+            <!-- =================================================
+                 LIVE ORDER STATUS
+            ================================================== -->
+
+            <div id="orderStatusSection">
+
+
+                <div class="status-heading">
+
+                    <h2>
+                        📦 Order Status
+                    </h2>
+
+                    <span
+                        class="order-id"
+                        id="displayOrderId"
+                    >
+                        Order #0
+                    </span>
+
+                </div>
+
+
+                <!-- CURRENT STATUS -->
+
+                <div class="current-status">
+
+                    <div
+                        class="status-icon"
+                        id="statusIcon"
+                    >
+                        🟡
+                    </div>
+
+
+                    <div id="currentStatus">
+                        Pending
+                    </div>
+
+
+                    <div id="statusMessage">
+                        Your order has been received.
+                    </div>
+
+                </div>
+
+
+                <!-- STATUS STEPS -->
+
+                <div class="status-steps">
+
+
+                    <div
+                        class="status-step active"
+                        id="stepPending"
+                    >
+
+                        <div class="step-circle">
+                            🕐
+                        </div>
+
+                        <div class="step-name">
+                            Pending
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="status-step"
+                        id="stepPreparing"
+                    >
+
+                        <div class="step-circle">
+                            👨‍🍳
+                        </div>
+
+                        <div class="step-name">
+                            Preparing
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="status-step"
+                        id="stepReady"
+                    >
+
+                        <div class="step-circle">
+                            ✅
+                        </div>
+
+                        <div class="step-name">
+                            Ready
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="status-step"
+                        id="stepOut"
+                    >
+
+                        <div class="step-circle">
+                            🚚
+                        </div>
+
+                        <div class="step-name">
+                            Out for Delivery
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="status-step"
+                        id="stepDelivered"
+                    >
+
+                        <div class="step-circle">
+                            🏠
+                        </div>
+
+                        <div class="step-name">
+                            Delivered
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- PROGRESS -->
+
+                <div class="progress-area">
+
+
+                    <div class="progress-top">
+
+                        <span>
+                            Delivery Progress
+                        </span>
+
+                        <span id="progressPercent">
+                            0%
+                        </span>
+
+                    </div>
+
+
+                    <div class="progress-bar">
+
+                        <div id="progressFill"></div>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+            <!-- SUCCESS -->
+
+            <div
+                id="orderSuccess"
+                class="success-message"
+            ></div>
+
+
+            <!-- ERROR -->
+
+            <div
+                id="orderError"
+                class="error-message"
+            ></div>
+
+
+        </div>
+
+
+        <!-- ================= CONTACT SECTION ================= -->
+
+        <div class="contact-section">
+
+
+            <h2>
+                📩 Contact Us
+            </h2>
+
+
+            <form id="contactForm">
+
+
+                <div class="form-group">
+
+                    <label for="contactName">
+                        Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="contactName"
+                        placeholder="Enter your name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="contactEmail">
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="contactEmail"
+                        placeholder="Enter your email"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="contactMessage">
+                        Message
+                    </label>
+
+                    <textarea
+                        id="contactMessage"
+                        placeholder="Enter your message"
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="place-order-btn"
+                >
+
+                    📩 Send Message
+
+                </button>
+
+
+            </form>
+
+
+            <div
+                id="contactSuccess"
+                class="success-message"
+            ></div>
+
+
+            <div
+                id="contactError"
+                class="error-message"
+            ></div>
+
+
+        </div>
+
+
+    </div>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+
+        let cart = [];
+
+        let statusInterval = null;
+
+
+        /* =====================================================
+           SET MINIMUM DATE
+        ===================================================== */
+
+        function setMinimumDate() {
+
+
+            const today =
+                new Date();
+
+
+            const year =
+                today.getFullYear();
+
+
+            const month =
+                String(
+                    today.getMonth() + 1
+                ).padStart(
+                    2,
+                    "0"
+                );
+
+
+            const day =
+                String(
+                    today.getDate()
+                ).padStart(
+                    2,
+                    "0"
+                );
+
+
+            const todayDate =
+                `${year}-${month}-${day}`;
+
+
+            document.getElementById(
+                "deliveryDate"
+            ).min =
+                todayDate;
+
+
+            document.getElementById(
+                "deliveryDate"
+            ).value =
+                todayDate;
+
+        }
+
+
+        /* =====================================================
+           LOAD CART
+        ===================================================== */
+
+        function loadCart() {
+
+
+            const savedCart =
+                localStorage.getItem(
+                    "tastyBitesCart"
+                );
+
+
+            if (savedCart) {
+
+                try {
+
+                    cart =
+                        JSON.parse(
+                            savedCart
+                        );
+
+                } catch (error) {
+
+                    cart = [];
+
+                }
+
+            } else {
+
+                cart = [];
+
+            }
+
+
+            displayCart();
+
+        }
+
+
+        /* =====================================================
+           DISPLAY CART
+        ===================================================== */
+
+        function displayCart() {
+
+
+            const cartItems =
+                document.getElementById(
+                    "cartItems"
+                );
+
+
+            const totalAmount =
+                document.getElementById(
+                    "totalAmount"
+                );
+
+
+            cartItems.innerHTML =
+                "";
+
+
+            if (cart.length === 0) {
+
+
+                cartItems.innerHTML = `
+
+                    <p
+                        style="
+                            text-align:center;
+                            padding:20px;
+                        "
+                    >
+
+                        🛒 Your cart is empty.
+
+                    </p>
+
+                `;
+
+
+                totalAmount.textContent =
+                    "0";
+
+
+                return;
+
+            }
+
+
+            let total = 0;
+
+
+            cart.forEach(
+                (item, index) => {
+
+
+                    const quantity =
+                        Number(
+                            item.quantity
+                        ) || 1;
+
+
+                    const price =
+                        Number(
+                            item.price
+                        ) || 0;
+
+
+                    const itemTotal =
+                        price *
+                        quantity;
+
+
+                    total +=
+                        itemTotal;
+
+
+                    const div =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    div.className =
+                        "cart-item";
+
+
+                    div.innerHTML = `
+
+                        <div
+                            class="cart-item-info"
+                        >
+
+                            <h3>
+                                ${item.name}
+                            </h3>
+
+                            <p>
+                                ₹${price}
+                                ×
+                                ${quantity}
+                            </p>
+
+                        </div>
+
+
+                        <div
+                            class="quantity-box"
+                        >
+
+                            <button
+                                type="button"
+                                onclick="
+                                    decreaseQuantity(
+                                        ${index}
+                                    )
+                                "
+                            >
+                                −
+                            </button>
+
+
+                            <span>
+                                ${quantity}
+                            </span>
+
+
+                            <button
+                                type="button"
+                                onclick="
+                                    increaseQuantity(
+                                        ${index}
+                                    )
+                                "
+                            >
+                                +
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="remove-btn"
+                                onclick="
+                                    removeItem(
+                                        ${index}
+                                    )
+                                "
+                            >
+                                🗑️
+                            </button>
+
+                        </div>
+
+
+                        <div
+                            class="item-price"
+                        >
+
+                            ₹${itemTotal}
+
+                        </div>
+
+                    `;
+
+
+                    cartItems.appendChild(
+                        div
+                    );
+
+                }
+            );
+
+
+            totalAmount.textContent =
+                total.toFixed(2);
+
+        }
+
+
+        /* =====================================================
+           QUANTITY
+        ===================================================== */
+
+        function increaseQuantity(
+            index
+        ) {
+
+
+            cart[index].quantity =
+                (
+                    Number(
+                        cart[index].quantity
+                    ) || 1
+                ) + 1;
+
+
+            saveCart();
+
+
+            displayCart();
+
+        }
+
+
+        function decreaseQuantity(
+            index
+        ) {
+
+
+            const quantity =
+                Number(
+                    cart[index].quantity
+                ) || 1;
+
+
+            if (quantity > 1) {
+
+
+                cart[index].quantity =
+                    quantity - 1;
+
+
+            } else {
+
+
+                cart.splice(
+                    index,
+                    1
+                );
+
+            }
+
+
+            saveCart();
+
+
+            displayCart();
+
+        }
+
+
+        function removeItem(
+            index
+        ) {
+
+
+            cart.splice(
+                index,
+                1
+            );
+
+
+            saveCart();
+
+
+            displayCart();
+
+        }
+
+
+        function saveCart() {
+
+
+            localStorage.setItem(
+                "tastyBitesCart",
+                JSON.stringify(
+                    cart
+                )
+            );
+
+        }
+
+
+        /* =====================================================
+           STATUS ORDER
+        ===================================================== */
+
+        const statusOrder = [
+
+            "Pending",
+
+            "Preparing",
+
+            "Ready",
+
+            "Out for Delivery",
+
+            "Delivered"
+
+        ];
+
+
+        /* =====================================================
+           UPDATE STATUS UI
+        ===================================================== */
+
+        function updateStatusUI(
+            status
+        ) {
+
+
+            const statusIndex =
+                statusOrder.indexOf(
+                    status
+                );
+
+
+            const index =
+                statusIndex >= 0
+                    ? statusIndex
+                    : 0;
+
+
+            /* CURRENT STATUS */
+
+            document.getElementById(
+                "currentStatus"
+            ).textContent =
+                status;
+
+
+            /* ICON */
+
+            const icons = [
+
+                "🟡",
+
+                "🟠",
+
+                "🔵",
+
+                "🚚",
+
+                "🟢"
+
+            ];
+
+
+            document.getElementById(
+                "statusIcon"
+            ).textContent =
+                icons[index];
+
+
+            /* MESSAGE */
+
+            const messages = [
+
+                "Your order has been received.",
+
+                "Our chef is preparing your food.",
+
+                "Your food is ready.",
+
+                "Your order is on the way.",
+
+                "Your order has been delivered."
+
+            ];
+
+
+            document.getElementById(
+                "statusMessage"
+            ).textContent =
+                messages[index];
+
+
+            /* STEPS */
+
+            const stepIds = [
+
+                "stepPending",
+
+                "stepPreparing",
+
+                "stepReady",
+
+                "stepOut",
+
+                "stepDelivered"
+
+            ];
+
+
+            stepIds.forEach(
+                (
+                    id,
+                    stepIndex
+                ) => {
+
+
+                    const step =
+                        document.getElementById(
+                            id
+                        );
+
+
+                    step.classList.remove(
+                        "active"
+                    );
+
+
+                    step.classList.remove(
+                        "completed"
+                    );
+
+
+                    if (
+                        stepIndex < index
+                    ) {
+
+
+                        step.classList.add(
+                            "completed"
+                        );
+
+
+                    } else if (
+                        stepIndex === index
+                    ) {
+
+
+                        step.classList.add(
+                            "active"
+                        );
+
+                    }
+
+                }
+            );
+
+
+            /* PROGRESS */
+
+            const percentages = [
+
+                0,
+
+                25,
+
+                50,
+
+                75,
+
+                100
+
+            ];
+
+
+            const percentage =
+                percentages[index];
+
+
+            document.getElementById(
+                "progressFill"
+            ).style.width =
+                percentage + "%";
+
+
+            document.getElementById(
+                "progressPercent"
+            ).textContent =
+                percentage + "%";
+
+
+            /* STOP CHECKING AFTER DELIVERY */
+
+            if (
+                status === "Delivered"
+            ) {
+
+
+                clearInterval(
+                    statusInterval
+                );
+
+            }
+
+        }
+
+
+        /* =====================================================
+           CHECK ORDER STATUS
+        ===================================================== */
+
+        async function checkOrderStatus(
+            orderId
+        ) {
+
+
+            try {
+
+
+                const response =
+                    await fetch(
+                        "http://localhost:8085/api/orders"
+                    );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Unable to fetch orders"
+                    );
+
+                }
+
+
+                const orders =
+                    await response.json();
+
+
+                const order =
+                    orders.find(
+                        item =>
+                            Number(
+                                item.id
+                            ) ===
+                            Number(
+                                orderId
+                            )
+                    );
+
+
+                if (!order) {
+
+                    return;
+
+                }
+
+
+                updateStatusUI(
+                    order.status
+                );
+
+
+            } catch (error) {
+
+
+                console.error(
+                    "Status Error:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        /* =====================================================
+           START LIVE STATUS
+        ===================================================== */
+
+        function startLiveStatus(
+            orderId
+        ) {
+
+
+            clearInterval(
+                statusInterval
+            );
+
+
+            document.getElementById(
+                "orderStatusSection"
+            ).style.display =
+                "block";
+
+
+            document.getElementById(
+                "displayOrderId"
+            ).textContent =
+                "Order #" +
+                orderId;
+
+
+            /* IMMEDIATE CHECK */
+
+            checkOrderStatus(
+                orderId
+            );
+
+
+            /*
+             * Backend status check
+             * every 10 seconds
+             */
+
+            statusInterval =
+                setInterval(
+                    function () {
+
+                        checkOrderStatus(
+                            orderId
+                        );
+
+                    },
+                    10000
+                );
+
+        }
+
+
+        /* =====================================================
+           PLACE ORDER
+        ===================================================== */
+
+        async function placeOrder(
+            event
+        ) {
+
+
+            event.preventDefault();
+
+
+            const orderSuccess =
+                document.getElementById(
+                    "orderSuccess"
+                );
+
+
+            const orderError =
+                document.getElementById(
+                    "orderError"
+                );
+
+
+            orderSuccess.style.display =
+                "none";
+
+
+            orderError.style.display =
+                "none";
+
+
+            if (
+                cart.length === 0
+            ) {
+
+
+                orderError.textContent =
+                    "🛒 Your cart is empty.";
+
+
+                orderError.style.display =
+                    "block";
+
+
+                return;
+
+            }
+
+
+            const customerName =
+                document.getElementById(
+                    "customerName"
+                ).value.trim();
+
+
+            const phone =
+                document.getElementById(
+                    "phone"
+                ).value.trim();
+
+
+            const address =
+                document.getElementById(
+                    "address"
+                ).value.trim();
+
+
+            const deliveryDate =
+                document.getElementById(
+                    "deliveryDate"
+                ).value;
+
+
+            const deliveryDuration =
+                document.getElementById(
+                    "deliveryDuration"
+                ).value;
+
+
+            if (
+                !deliveryDuration
+            ) {
+
+
+                orderError.textContent =
+                    "Please select delivery duration.";
+
+
+                orderError.style.display =
+                    "block";
+
+
+                return;
+
+            }
+
+
+            /* CURRENT TIME */
+
+              /* ESTIMATED DELIVERY TIME */
+
+const now = new Date();
+
+const selectedDuration = Number(deliveryDuration);
+
+const estimatedTime = new Date(
+    now.getTime() + selectedDuration * 60 * 1000
+);
+
+let hours = estimatedTime.getHours();
+
+const minutes = String(
+    estimatedTime.getMinutes()
+).padStart(2, "0");
+
+const suffix = hours >= 12 ? "PM" : "AM";
+
+hours = hours % 12 || 12;
+
+const deliveryTime = `${hours}:${minutes} ${suffix}`;
+
+
+            /* RESTAURANT ID */
+                const restaurantId =
+    Number(
+        new URLSearchParams(window.location.search)
+            .get("restaurantId")
+    ) ||
+    Number(
+        localStorage.getItem("selectedRestaurantId")
+    ) ||
+    (cart.length > 0
+        ? Number(cart[0].restaurantId)
+        : null);
+
+if (!restaurantId || ![1, 2, 3].includes(restaurantId)) {
+    alert("Restaurant not selected. Please select a restaurant and try again.");
+    return;
+}
+
+const restaurantNames = {
+    1: "Spice Garden",
+    2: "Food Corner",
+    3: "Urban Spices"
+};
+
+const restaurantName =
+    restaurantNames[restaurantId] || "Tasty Bites";
+
+console.log("Cart:", cart);
+console.log("First item:", cart[0]);
+console.log("Restaurant ID:", cart[0]?.restaurantId);
+console.log("Restaurant Name:", restaurantName);
+
+            /* ORDER ITEMS */
+
+                     const orderItems = cart.map(item => ({
+    foodName: item.name,
+    quantity: Number(item.quantity) || 1,
+    subtotal:
+        (Number(item.price) || 0) *
+        (Number(item.quantity) || 1)
+}));
+
+
+            /* TOTAL */
+
+            const totalPrice =
+                cart.reduce(
+                    (
+                        sum,
+                        item
+                    ) =>
+                        sum +
+                        (
+                            Number(
+                                item.price
+                            ) *
+                            Number(
+                                item.quantity
+                            )
+                        ),
+                    0
+                );
+
+
+            /* ORDER DATA */
+
+            const orderData = {
+
+
+                customerName:
+                    customerName,
+
+
+                phone:
+                    phone,
+
+
+                foodName:
+                    cart
+                        .map(
+                            item =>
+                                item.name
+                        )
+                        .join(", "),
+
+
+                quantity:
+                    cart.reduce(
+                        (
+                            sum,
+                            item
+                        ) =>
+                            sum +
+                            Number(
+                                item.quantity
+                            ),
+                        0
+                    ),
+
+
+                totalPrice:
+                    totalPrice,
+
+
+                address:
+                    address,
+
+
+                status:
+                    "Pending",
+
+
+                restaurantId:
+                    restaurantId,
+
+
+                deliveryDate:
+                    deliveryDate,
+
+
+                deliveryTime:
+                    deliveryTime,
+
+
+                deliveryDurationMinutes:
+                    Number(
+                        deliveryDuration
+                    ),
+
+
+                orderItems:
+                    orderItems
+
+            };
+
+
+            try {
+
+
+                const response =
+                    await fetch(
+                        "http://localhost:8085/api/orders",
+                        {
+
+                            method:
+                                "POST",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json"
+
+                            },
+
+                            body:
+                                JSON.stringify(
+                                    orderData
+                                )
+
+                        }
+                    );
+
+
+                // Read the response body only once so we can see the real backend error.
+                const responseText = await response.text();
+
+                console.log("Order Data Sent:", orderData);
+                console.log("Order Response Status:", response.status);
+                console.log("Order Response Body:", responseText);
+
+                if (!response.ok) {
+                    throw new Error(
+                        "Order failed (" + response.status + "): " + responseText
+                    );
+                }
+
+                let savedOrder;
+                try {
+                    savedOrder = responseText ? JSON.parse(responseText) : {};
+                } catch (parseError) {
+                    throw new Error(
+                        "Order response was not valid JSON: " + responseText
+                    );
+                }
+
+
+                /* CLEAR CART */
+
+                cart = [];
+
+
+                localStorage.removeItem(
+                    "tastyBitesCart"
+                );
+
+
+                displayCart();
+
+
+                /* SUCCESS */
+                       /* SUCCESS */
+
+const restaurantName =
+    cart.length > 0
+        ? (cart[0].restaurantName || cart[0].restaurant || "Tasty Bites")
+        : "Tasty Bites";
+
+const selectedDuration =
+    Number(deliveryDuration);
+
+const estimatedTime = new Date(
+    Date.now() + selectedDuration * 60 * 1000
+);
+
+const estimatedDeliveryTime =
+    estimatedTime.toLocaleTimeString("en-IN", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true
+    });
+
+orderSuccess.innerHTML = `
+    🎉 <strong>Order Placed Successfully!</strong>
+    <br><br>
+    🧾 Order ID: #${savedOrder.id}
+    <br>
+    🍽️ Restaurant: ${restaurantNames[Number(savedOrder.restaurantId)] || restaurantName}
+    <br>
+    🍕 Food Ordered: ${savedOrder.foodName}
+    <br>
+    💰 Food Cost: ₹${savedOrder.totalPrice}
+    <br>
+    ⏰ Estimated Delivery: ${estimatedDeliveryTime}
+    <br>
+    🚚 Estimated Time: ${selectedDuration} minutes
+`;
+
+orderSuccess.style.display = "block";
+               
+
+
+                /* SHOW PENDING */
+
+                updateStatusUI(
+                    "Pending"
+                );
+
+
+                /* START LIVE STATUS */
+
+                startLiveStatus(
+                    savedOrder.id
+                );
+
+
+                /* RESET FORM */
+
+                document.getElementById(
+                    "orderForm"
+                ).reset();
+
+
+                setMinimumDate();
+
+
+            } catch (
+                error
+            ) {
+
+
+                console.error(
+                    "Order Error:",
+                    error
+                );
+
+
+                orderError.textContent =
+                    "❌ Failed to place order. Please try again.";
+
+
+                orderError.style.display =
+                    "block";
+
+            }
+
+        }
+
+
+        /* =====================================================
+           CONTACT FORM
+        ===================================================== */
+
+        async function submitContact(
+            event
+        ) {
+
+
+            event.preventDefault();
+
+
+            const success =
+                document.getElementById(
+                    "contactSuccess"
+                );
+
+
+            const error =
+                document.getElementById(
+                    "contactError"
+                );
+
+
+            success.style.display =
+                "none";
+
+
+            error.style.display =
+                "none";
+
+
+            const name =
+                document.getElementById(
+                    "contactName"
+                ).value.trim();
+
+
+            const email =
+                document.getElementById(
+                    "contactEmail"
+                ).value.trim();
+
+
+            const message =
+                document.getElementById(
+                    "contactMessage"
+                ).value.trim();
+
+
+            const contactData = {
+
+
+                name:
+                    name,
+
+
+                email:
+                    email,
+
+
+                message:
+                    message
+
+            };
+
+
+            try {
+
+
+                const response =
+                    await fetch(
+                        "http://localhost:8085/api/contact",
+                        {
+
+                            method:
+                                "POST",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json"
+
+                            },
+
+                            body:
+                                JSON.stringify(
+                                    contactData
+                                )
+
+                        }
+                    );
+
+
+                if (
+                    !response.ok
+                ) {
+
+
+                    throw new Error(
+                        "Contact request failed"
+                    );
+
+                }
+
+
+                success.textContent =
+                    "✅ Your message has been sent successfully!";
+
+
+                success.style.display =
+                    "block";
+
+
+                document.getElementById(
+                    "contactForm"
+                ).reset();
+
+
+            } catch (
+                err
+            ) {
+
+
+                console.error(
+                    err
+                );
+
+
+                error.textContent =
+                    "❌ Failed to send message. Please try again.";
+
+
+                error.style.display =
+                    "block";
+
+            }
+
+        }
+
+
+        /* =====================================================
+           FORM EVENTS
+        ===================================================== */
+
+        document.getElementById(
+            "orderForm"
+        ).addEventListener(
+            "submit",
+            placeOrder
+        );
+
+
+        document.getElementById(
+            "contactForm"
+        ).addEventListener(
+            "submit",
+            submitContact
+        );
+
+
+        /* =====================================================
+           PAGE LOAD
+        ===================================================== */
+
+        window.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+
+                setMinimumDate();
+
+
+                loadCart();
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,2577 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Tasty Bites | Restaurant</title>
+
+<style>
+
+/* ================= GLOBAL ================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    background:#f5efe2;
+    color:#3a2f24;
+}
+
+
+/* ================= NAVBAR ================= */
+
+nav{
+    min-height:75px;
+    background:#10251b;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:12px 6%;
+    position:sticky;
+    top:0;
+    z-index:1000;
+    box-shadow:0 4px 20px rgba(16,37,27,.25);
+    gap:20px;
+}
+
+.logo{
+    color:#fff8e8;
+    font-size:28px;
+    font-weight:bold;
+    white-space:nowrap;
+}
+
+.logo span{
+    color:#e89b2d;
+}
+
+
+/* ================= NAVBAR SEARCH ================= */
+
+.nav-search{
+    position:relative;
+    display:flex;
+    align-items:center;
+    flex-shrink:0;
+}
+
+.nav-search input{
+    width:210px;
+    height:40px;
+    padding:10px 42px 10px 16px;
+    border:none;
+    outline:none;
+    border-radius:25px;
+    background:#fffaf0;
+    color:#3a2f24;
+    font-size:14px;
+}
+
+.nav-search input::placeholder{
+    color:#777;
+}
+
+.nav-search button{
+    position:absolute;
+    right:4px;
+    width:32px;
+    height:32px;
+    border:none;
+    border-radius:50%;
+    background:#e89b2d;
+    color:white;
+    cursor:pointer;
+    font-size:15px;
+    transition:.3s;
+}
+
+.nav-search button:hover{
+    background:#d4871e;
+    transform:scale(1.05);
+}
+
+
+/* ================= SEARCH RESULTS ================= */
+
+.search-results{
+    position:absolute;
+    top:48px;
+    right:0;
+    width:310px;
+    max-height:380px;
+    overflow-y:auto;
+    background:#fffaf0;
+    border-radius:14px;
+    box-shadow:0 12px 30px rgba(0,0,0,.30);
+    display:none;
+    z-index:3000;
+}
+
+.search-result-item{
+    padding:14px 16px;
+    cursor:pointer;
+    color:#183528;
+    border-bottom:1px solid #eadfca;
+    transition:.25s;
+}
+
+.search-result-item:last-child{
+    border-bottom:none;
+}
+
+.search-result-item:hover{
+    background:#f5efe2;
+}
+
+.search-food-name{
+    font-size:16px;
+    font-weight:bold;
+    margin-bottom:5px;
+}
+
+.search-food-details{
+    color:#756d63;
+    font-size:13px;
+    line-height:1.5;
+}
+
+.search-food-price{
+    color:#d4871e;
+    font-weight:bold;
+}
+
+.search-no-result{
+    padding:18px;
+    color:#777;
+    text-align:center;
+    font-size:14px;
+}
+
+.search-loading{
+    padding:18px;
+    color:#777;
+    text-align:center;
+}
+
+
+/* ================= NAV LINKS ================= */
+
+nav ul{
+    display:flex;
+    list-style:none;
+    gap:20px;
+    align-items:center;
+    margin-left:auto;
+}
+
+nav ul li{
+    white-space:nowrap;
+}
+
+nav ul li a{
+    color:#fff8e8;
+    text-decoration:none;
+    font-size:15px;
+    transition:.3s;
+}
+
+nav ul li a:hover{
+    color:#e89b2d;
+}
+
+
+/* ================= HERO ================= */
+
+.hero{
+    min-height:650px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:70px 8%;
+
+    background:
+    linear-gradient(
+        90deg,
+        #10251b 15%,
+        rgba(16,37,27,.94) 40%,
+        rgba(16,37,27,.35)
+    ),
+
+    url("https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=1400&q=85");
+
+    background-size:cover;
+    background-position:center;
+
+    color:white;
+}
+
+.hero-content{
+    max-width:580px;
+}
+
+.tag{
+    color:#e89b2d;
+    letter-spacing:4px;
+    font-weight:bold;
+    font-size:14px;
+    margin-bottom:20px;
+}
+
+.hero h1{
+    font-size:65px;
+    line-height:1.05;
+    margin-bottom:25px;
+}
+
+.hero h1 span{
+    color:#e89b2d;
+}
+
+.hero p{
+    color:#eee6d7;
+    font-size:18px;
+    line-height:1.7;
+    margin-bottom:30px;
+}
+
+.buttons{
+    display:flex;
+    gap:15px;
+}
+
+.btn{
+    padding:15px 30px;
+    border-radius:30px;
+    text-decoration:none;
+    font-weight:bold;
+    display:inline-block;
+    transition:.3s;
+}
+
+.primary{
+    background:#e89b2d;
+    color:white;
+    box-shadow:
+        0 8px 20px rgba(232,155,45,.25);
+}
+
+.primary:hover{
+    background:#d4871e;
+    transform:translateY(-3px);
+    box-shadow:
+        0 12px 25px rgba(232,155,45,.35);
+}
+
+.outline{
+    border:2px solid #fff8e8;
+    color:#fff8e8;
+}
+
+.outline:hover{
+    background:#fff8e8;
+    color:#10251b;
+}
+
+
+/* ================= FEATURES ================= */
+
+.features{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:25px;
+    padding:70px 8%;
+    background:#183528;
+}
+
+.feature{
+    padding:35px 30px;
+    border-radius:22px;
+    text-align:center;
+    background:#f8f2e5;
+    border:1px solid rgba(232,155,45,.25);
+    box-shadow:0 10px 30px rgba(0,0,0,.12);
+    transition:.35s;
+}
+
+.feature:hover{
+    transform:translateY(-10px);
+    border-color:#e89b2d;
+    box-shadow:0 18px 35px rgba(0,0,0,.20);
+}
+
+.feature-icon{
+    font-size:42px;
+    margin-bottom:15px;
+}
+
+.feature h3{
+    margin-bottom:10px;
+    color:#183528;
+    font-size:21px;
+}
+
+.feature p{
+    color:#6d665d;
+    line-height:1.6;
+}
+
+
+/* ================= RESTAURANT SELECTION ================= */
+
+.restaurant-selection{
+    padding:80px 8%;
+    text-align:center;
+    background:#183528;
+}
+
+.restaurant-selection h2{
+    font-size:42px;
+    margin-bottom:10px;
+    color:#fff8e8;
+}
+
+.restaurant-subtitle{
+    color:#d5d0c6;
+    margin-bottom:35px;
+}
+
+.restaurant-box{
+    max-width:650px;
+    margin:auto;
+    padding:35px;
+    background:#fffaf0;
+    border-radius:22px;
+    box-shadow:0 15px 35px rgba(0,0,0,.20);
+    text-align:left;
+}
+
+.restaurant-box label{
+    display:block;
+    margin-bottom:10px;
+    color:#183528;
+    font-weight:bold;
+}
+
+.restaurant-box select{
+    width:100%;
+    padding:14px 16px;
+    border:1px solid #d8cdb8;
+    border-radius:12px;
+    font-size:16px;
+    background:white;
+    color:#3a2f24;
+    outline:none;
+}
+
+.restaurant-box select:focus{
+    border-color:#e89b2d;
+}
+
+.restaurant-details{
+    margin-top:18px;
+    padding:15px;
+    border-radius:12px;
+    background:#f5efe2;
+    color:#6d665d;
+    line-height:1.7;
+}
+
+.restaurant-btn{
+    width:100%;
+    margin-top:20px;
+    padding:14px;
+    border:none;
+    border-radius:25px;
+    background:#e89b2d;
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.restaurant-btn:hover{
+    background:#d4871e;
+    transform:translateY(-2px);
+}
+
+
+/* ================= MANAGER LOGIN ================= */
+
+.manager-login-section{
+    margin-top:30px;
+    padding-top:25px;
+    border-top:1px solid #d8cdb8;
+}
+
+.manager-login-title{
+    text-align:center;
+    color:#183528;
+    font-size:20px;
+    font-weight:bold;
+    margin-bottom:18px;
+}
+
+.manager-login-buttons{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+}
+
+.manager-btn{
+    padding:14px 10px;
+    border:none;
+    border-radius:12px;
+    background:#183528;
+    color:white;
+    font-size:14px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.manager-btn:hover{
+    background:#e89b2d;
+    transform:translateY(-3px);
+    box-shadow:0 8px 18px rgba(232,155,45,.25);
+}
+
+
+/* ================= POPULAR ================= */
+
+.popular{
+    padding:90px 8%;
+    text-align:center;
+    background:#f5efe2;
+}
+
+.section-tag{
+    color:#c67c18;
+    letter-spacing:3px;
+    font-weight:bold;
+    font-size:14px;
+    margin-bottom:10px;
+}
+
+.popular h2{
+    font-size:45px;
+    margin-bottom:10px;
+    color:#183528;
+}
+
+.popular h2::after{
+    content:"";
+    display:block;
+    width:70px;
+    height:4px;
+    background:#e89b2d;
+    border-radius:10px;
+    margin:15px auto 0;
+}
+
+.subtitle{
+    color:#756d63;
+    margin-bottom:45px;
+    margin-top:10px;
+}
+
+
+/* ================= FOOD GRID ================= */
+
+.food-container{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:25px;
+}
+
+.food-card{
+    background:#fffaf0;
+    border-radius:22px;
+    overflow:hidden;
+    border:1px solid #eadfca;
+    box-shadow:0 10px 30px rgba(50,40,25,.12);
+    transition:.35s;
+}
+
+.food-card:hover{
+    transform:translateY(-12px);
+    border-color:#e89b2d;
+    box-shadow:0 20px 40px rgba(50,40,25,.20);
+}
+
+.image-box{
+    overflow:hidden;
+    position:relative;
+}
+
+.food-card img{
+    width:100%;
+    height:210px;
+    object-fit:cover;
+    display:block;
+    transition:.4s;
+}
+
+.food-card:hover img{
+    transform:scale(1.08);
+}
+
+.food-info{
+    padding:20px;
+}
+
+.food-info h3{
+    font-size:20px;
+    margin-bottom:8px;
+    color:#183528;
+}
+
+.food-price{
+    color:#d4871e;
+    font-size:20px;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+
+.order-btn{
+    display:inline-block;
+    background:#183528;
+    color:white;
+    text-decoration:none;
+    padding:10px 22px;
+    border-radius:25px;
+    font-size:14px;
+    font-weight:bold;
+    transition:.3s;
+}
+
+.order-btn:hover{
+    background:#e89b2d;
+    color:white;
+    transform:translateY(-2px);
+}
+
+
+/* ================= ABOUT ================= */
+
+.about{
+    padding:90px 8%;
+    display:flex;
+    align-items:center;
+    gap:60px;
+    background:#183528;
+}
+
+.about-image{
+    flex:1;
+    border-radius:25px;
+    overflow:hidden;
+    border:2px solid rgba(232,155,45,.35);
+    box-shadow:0 20px 45px rgba(0,0,0,.25);
+}
+
+.about-image img{
+    width:100%;
+    height:420px;
+    object-fit:cover;
+    display:block;
+    transition:.4s;
+}
+
+.about-image:hover img{
+    transform:scale(1.04);
+}
+
+.about-content{
+    flex:1;
+}
+
+.about-content .section-tag{
+    margin-bottom:12px;
+    color:#e89b2d;
+}
+
+.about-content h2{
+    font-size:42px;
+    margin-bottom:20px;
+    color:#fff8e8;
+}
+
+.about-content p{
+    color:#d5d0c6;
+    line-height:1.8;
+    margin-bottom:25px;
+}
+
+
+/* ================= CTA ================= */
+
+.cta{
+    margin:60px 8% 80px;
+    padding:85px 20px;
+    text-align:center;
+    border-radius:25px;
+
+    background:
+    linear-gradient(
+        rgba(16,37,27,.85),
+        rgba(16,37,27,.85)
+    ),
+
+    url("https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=1400&q=85");
+
+    background-size:cover;
+    background-position:center;
+    color:white;
+    border:1px solid #e89b2d;
+    box-shadow:0 15px 40px rgba(30,40,25,.20);
+}
+
+.cta h2{
+    font-size:42px;
+    margin-bottom:15px;
+}
+
+.cta h2 span{
+    color:#e89b2d;
+}
+
+.cta p{
+    color:#e8e2d7;
+    margin-bottom:25px;
+}
+
+
+/* ================= FOOTER ================= */
+
+footer{
+    background:#10251b;
+    color:white;
+    padding:45px 8%;
+    border-top:3px solid #e89b2d;
+}
+
+.footer-content{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.footer-logo{
+    font-size:26px;
+    font-weight:bold;
+}
+
+.footer-logo span{
+    color:#e89b2d;
+}
+
+.contact{
+    color:#d5d0c6;
+}
+
+.copyright{
+    text-align:center;
+    color:#9b978e;
+    border-top:1px solid #365044;
+    padding-top:20px;
+    margin-top:25px;
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media screen and (max-width:1200px){
+
+    nav{
+        padding:12px 4%;
+    }
+
+    nav ul{
+        gap:14px;
+    }
+
+    nav ul li a{
+        font-size:14px;
+    }
+
+    .nav-search input{
+        width:170px;
+    }
+
+}
+
+
+@media screen and (max-width:1000px){
+
+    nav{
+        flex-wrap:wrap;
+        justify-content:center;
+        padding:15px 4%;
+    }
+
+    .logo{
+        width:100%;
+        text-align:center;
+    }
+
+    .nav-search{
+        order:2;
+    }
+
+    nav ul{
+        order:3;
+        width:100%;
+        justify-content:center;
+        flex-wrap:wrap;
+    }
+
+    .hero{
+        text-align:center;
+        justify-content:center;
+    }
+
+    .hero h1{
+        font-size:50px;
+    }
+
+    .food-container{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .features{
+        grid-template-columns:1fr;
+    }
+
+    .about{
+        flex-direction:column;
+    }
+
+}
+
+
+@media screen and (max-width:600px){
+
+    nav{
+        height:auto;
+        padding:18px;
+        flex-direction:column;
+        gap:15px;
+    }
+
+    .logo{
+        width:auto;
+    }
+
+    .nav-search{
+        width:100%;
+        justify-content:center;
+    }
+
+    .nav-search input{
+        width:250px;
+    }
+
+    .search-results{
+        width:280px;
+        left:50%;
+        right:auto;
+        transform:translateX(-50%);
+    }
+
+    nav ul{
+        gap:12px;
+        flex-wrap:wrap;
+        justify-content:center;
+    }
+
+    nav ul li a{
+        font-size:14px;
+    }
+
+    .hero{
+        min-height:580px;
+        padding:50px 20px;
+    }
+
+    .hero h1{
+        font-size:40px;
+    }
+
+    .hero p{
+        font-size:16px;
+    }
+
+    .buttons{
+        flex-direction:column;
+    }
+
+    .food-container{
+        grid-template-columns:1fr;
+    }
+
+    .popular h2{
+        font-size:34px;
+    }
+
+    .about-content h2{
+        font-size:32px;
+    }
+
+    .cta h2{
+        font-size:32px;
+    }
+
+    .footer-content{
+        flex-direction:column;
+        gap:20px;
+        text-align:center;
+    }
+
+    .restaurant-box{
+        padding:25px 20px;
+    }
+
+    .manager-login-buttons{
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav>
+
+    <div class="logo">
+
+        👨‍🍳 Tasty <span>Bites</span>
+
+    </div>
+
+
+    <!-- ================= FOOD SEARCH ================= -->
+
+    <div class="nav-search">
+
+        <input
+            type="text"
+            id="foodSearch"
+            placeholder="🔍 Search food..."
+            autocomplete="off"
+        >
+
+        <button
+            type="button"
+            onclick="searchFood()">
+
+            🔍
+
+        </button>
+
+
+        <div
+            id="searchResults"
+            class="search-results">
+        </div>
+
+    </div>
+
+
+    <ul>
+
+        <li>
+            <a href="index.html">
+                Home
+            </a>
+        </li>
+
+        <li>
+            <a href="menu.html">
+                Menu
+            </a>
+        </li>
+
+        <li>
+            <a href="gallery.html">
+                Gallery
+            </a>
+        </li>
+
+        <li>
+            <a href="contact.html">
+                Contact
+            </a>
+        </li>
+
+        <li>
+            <a href="my-orders.html">
+                📦 My Orders
+            </a>
+        </li>
+
+        <li>
+            <a href="cart.html">
+                🛒 Cart
+            </a>
+        </li>
+
+        <li>
+            <a href="admin-dashboard.html">
+                Admin
+            </a>
+        </li>
+
+        <li>
+            <a href="manager-login.html">
+                👨‍💼 Manager
+            </a>
+        </li>
+
+        <!-- CUSTOMER LOGIN -->
+
+        <li id="loginLink">
+
+            <a href="customer-login.html">
+                🔐 Login
+            </a>
+
+        </li>
+
+
+        <!-- CUSTOMER WELCOME -->
+
+        <li
+            id="customerWelcome"
+            style="display:none;">
+
+            <span
+                style="
+                color:#e89b2d;
+                font-weight:bold;
+                ">
+            </span>
+
+        </li>
+
+
+        <!-- CUSTOMER LOGOUT -->
+
+        <li
+            id="logoutLink"
+            style="display:none;">
+
+            <a
+                href="#"
+                onclick="logoutCustomer(); return false;">
+
+                🚪 Logout
+
+            </a>
+
+        </li>
+
+    </ul>
+
+</nav>
+
+
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="tag">
+            WELCOME TO TASTY BITES
+        </div>
+
+        <h1>
+
+            Taste The
+            <span>Happiness</span>
+
+            <br>
+
+            In Every Bite
+
+        </h1>
+
+        <p>
+
+            Fresh ingredients, delicious recipes
+            and unforgettable flavours.
+            Experience the perfect taste at
+            Tasty Bites.
+
+        </p>
+
+        <div class="buttons">
+
+            <a
+                href="menu.html"
+                class="btn primary">
+
+                🍴 Explore Menu
+
+            </a>
+
+            <a
+                href="contact.html"
+                class="btn outline">
+
+                🛒 Order Now
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ================= FEATURES ================= -->
+
+<section class="features">
+
+
+    <div class="feature">
+
+        <div class="feature-icon">
+            🌿
+        </div>
+
+        <h3>
+            Fresh Ingredients
+        </h3>
+
+        <p>
+            We use fresh and quality
+            ingredients for every dish.
+        </p>
+
+    </div>
+
+
+    <div class="feature">
+
+        <div class="feature-icon">
+            👨‍🍳
+        </div>
+
+        <h3>
+            Expert Chefs
+        </h3>
+
+        <p>
+            Delicious dishes prepared
+            by our experienced chefs.
+        </p>
+
+    </div>
+
+
+    <div class="feature">
+
+        <div class="feature-icon">
+            🚀
+        </div>
+
+        <h3>
+            Fast Service
+        </h3>
+
+        <p>
+            Quick ordering and friendly
+            service for every customer.
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- ================= RESTAURANT SELECTION ================= -->
+
+<section class="restaurant-selection">
+
+    <div class="section-tag">
+
+        CHOOSE YOUR RESTAURANT
+
+    </div>
+
+    <h2>
+
+        Select a Restaurant
+
+    </h2>
+
+    <p class="restaurant-subtitle">
+
+        Choose the restaurant you want to order from.
+
+    </p>
+
+
+    <div class="restaurant-box">
+
+
+        <label for="restaurantSelect">
+
+            🍽️ Restaurant
+
+        </label>
+
+
+        <select
+            id="restaurantSelect"
+            onchange="selectRestaurant()">
+
+            <option value="">
+
+                -- Select Restaurant --
+
+            </option>
+
+        </select>
+
+
+        <div
+            id="restaurantDetails"
+            class="restaurant-details">
+
+            Please select a restaurant to continue.
+
+        </div>
+
+
+        <button
+            class="restaurant-btn"
+            onclick="continueToMenu()">
+
+            🍴 Continue to Menu
+
+        </button>
+
+
+
+        <!-- ================= MANAGER LOGIN ================= -->
+
+        <div class="manager-login-section">
+
+
+            <div class="manager-login-title">
+
+                👨‍💼 Restaurant Manager Login
+
+            </div>
+
+
+            <div class="manager-login-buttons">
+
+
+                <button
+                    type="button"
+                    class="manager-btn"
+                    onclick="managerLogin(1)">
+
+                    🌿 Spice Garden Manager
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="manager-btn"
+                    onclick="managerLogin(2)">
+
+                    🍴 Food Corner Manager
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="manager-btn"
+                    onclick="managerLogin(3)">
+
+                    🌶️ Urban Spice Manager
+
+                </button>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ================= POPULAR DISHES ================= -->
+
+<section class="popular">
+
+
+    <div class="section-tag">
+
+        OUR SPECIALS
+
+    </div>
+
+
+    <h2>
+
+        Popular Dishes
+
+    </h2>
+
+
+    <p class="subtitle">
+
+        Delicious food made with love ❤️
+
+    </p>
+
+
+    <div class="food-container">
+
+
+        <!-- PIZZA -->
+
+        <div class="food-card">
+
+            <div class="image-box">
+
+                <img
+                    src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=700&q=85"
+                    alt="Pizza">
+
+            </div>
+
+            <div class="food-info">
+
+                <h3>
+                    🍕 Pizza
+                </h3>
+
+                <div class="food-price">
+                    ₹199
+                </div>
+
+                <a
+                    href="contact.html?food=Pizza&price=199"
+                    class="order-btn">
+
+                    Order Now
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- BIRYANI -->
+
+        <div class="food-card">
+
+            <div class="image-box">
+
+                <img
+                    src="https://images.unsplash.com/photo-1559528896-c5310744cce8?auto=format&fit=crop&w=900&q=85"
+                    alt="Chicken Biryani">
+
+            </div>
+
+            <div class="food-info">
+
+                <h3>
+                    🍗 Chicken Biryani
+                </h3>
+
+                <div class="food-price">
+                    ₹249
+                </div>
+
+                <a
+                    href="contact.html?food=Chicken%20Biryani&price=249"
+                    class="order-btn">
+
+                    Order Now
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- BURGER -->
+
+        <div class="food-card">
+
+            <div class="image-box">
+
+                <img
+                    src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=700&q=85"
+                    alt="Burger">
+
+            </div>
+
+            <div class="food-info">
+
+                <h3>
+                    🍔 Burger
+                </h3>
+
+                <div class="food-price">
+                    ₹149
+                </div>
+
+                <a
+                    href="contact.html?food=Burger&price=149"
+                    class="order-btn">
+
+                    Order Now
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- PASTA -->
+
+        <div class="food-card">
+
+            <div class="image-box">
+
+                <img
+                    src="https://images.unsplash.com/photo-1776810250123-119d15036790?auto=format&fit=crop&w=900&q=85"
+                    alt="Penne Pasta">
+
+            </div>
+
+            <div class="food-info">
+
+                <h3>
+                    🍝 Pasta
+                </h3>
+
+                <div class="food-price">
+                    ₹110
+                </div>
+
+                <a
+                    href="contact.html?food=Pasta&price=110"
+                    class="order-btn">
+
+                    Order Now
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- FISH -->
+
+        <div class="food-card">
+
+            <div class="image-box">
+
+                <img
+                    src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=700&q=85"
+                    alt="Fish">
+
+            </div>
+
+            <div class="food-info">
+
+                <h3>
+                    🐟 Fish Fry
+                </h3>
+
+                <div class="food-price">
+                    ₹200
+                </div>
+
+                <a
+                    href="contact.html?food=Fish%20Fry&price=200"
+                    class="order-btn">
+
+                    Order Now
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- CHICKEN 65 -->
+
+        <div class="food-card">
+
+            <div class="image-box">
+
+                <img
+                    src="https://images.unsplash.com/photo-1658249499954-4aad343157f9?auto=format&fit=crop&w=900&q=85"
+                    alt="Chicken 65">
+
+            </div>
+
+            <div class="food-info">
+
+                <h3>
+                    🍗 Chicken 65
+                </h3>
+
+                <div class="food-price">
+                    ₹180
+                </div>
+
+                <a
+                    href="contact.html?food=Chicken%2065&price=180"
+                    class="order-btn">
+
+                    Order Now
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- SANDWICH -->
+
+        <div class="food-card">
+
+            <div class="image-box">
+
+                <img
+                    src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=700&q=85"
+                    alt="Sandwich">
+
+            </div>
+
+            <div class="food-info">
+
+                <h3>
+                    🥪 Sandwich
+                </h3>
+
+                <div class="food-price">
+                    ₹230
+                </div>
+
+                <a
+                    href="contact.html?food=Sandwich&price=230"
+                    class="order-btn">
+
+                    Order Now
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- DOSA -->
+
+        <div class="food-card">
+
+            <div class="image-box">
+
+                <img
+                    src="https://images.unsplash.com/photo-1668236543090-82eba5ee5976?auto=format&fit=crop&w=700&q=85"
+                    alt="Dosa">
+
+            </div>
+
+            <div class="food-info">
+
+                <h3>
+                    🥞 Dosa
+                </h3>
+
+                <div class="food-price">
+                    ₹230
+                </div>
+
+                <a
+                    href="contact.html?food=Dosa&price=230"
+                    class="order-btn">
+
+                    Order Now
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- ================= ABOUT ================= -->
+
+<section class="about">
+
+
+    <div class="about-image">
+
+        <img
+            src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1000&q=85"
+            alt="Restaurant">
+
+    </div>
+
+
+    <div class="about-content">
+
+
+        <div class="section-tag">
+
+            ABOUT TASTY BITES
+
+        </div>
+
+
+        <h2>
+
+            Good Food.
+
+            <br>
+
+            Great Moments.
+
+        </h2>
+
+
+        <p>
+
+            At Tasty Bites, we believe that food
+            is more than just a meal. It is an
+            experience that brings people together.
+
+        </p>
+
+
+        <p>
+
+            From traditional favourites to modern
+            flavours, every dish is prepared with
+            fresh ingredients and lots of care.
+
+        </p>
+
+
+        <a
+            href="menu.html"
+            class="btn primary">
+
+            View Our Menu
+
+        </a>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- ================= CTA ================= -->
+
+<section class="cta">
+
+
+    <h2>
+
+        Hungry?
+
+        <span>
+
+            Let's Order!
+
+        </span>
+
+    </h2>
+
+
+    <p>
+
+        Your favourite food is just one click away.
+
+    </p>
+
+
+    <a
+        href="menu.html"
+        class="btn primary">
+
+        🍴 View Full Menu
+
+    </a>
+
+
+</section>
+
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+
+    <div class="footer-content">
+
+
+        <div class="footer-logo">
+
+            👨‍🍳 Tasty
+
+            <span>
+                Bites
+            </span>
+
+        </div>
+
+
+        <div class="contact">
+
+            📍 Chennai
+
+            &nbsp; | &nbsp;
+
+            📞 9876543210
+
+        </div>
+
+
+    </div>
+
+
+    <div class="copyright">
+
+        © 2026 Tasty Bites.
+        All Rights Reserved.
+
+    </div>
+
+
+</footer>
+
+
+
+<script>
+
+
+/* =========================================================
+   MAIN SCRIPT
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        /* =================================================
+           CUSTOMER LOGIN
+        ================================================= */
+
+        let loggedInCustomer = null;
+
+
+        try{
+
+            loggedInCustomer =
+                JSON.parse(
+                    localStorage.getItem(
+                        "loggedInCustomer"
+                    )
+                );
+
+        }
+        catch(error){
+
+            console.error(
+                "Login data error:",
+                error
+            );
+
+            localStorage.removeItem(
+                "loggedInCustomer"
+            );
+
+        }
+
+
+        const loginLink =
+            document.getElementById(
+                "loginLink"
+            );
+
+
+        const customerWelcome =
+            document.getElementById(
+                "customerWelcome"
+            );
+
+
+        const logoutLink =
+            document.getElementById(
+                "logoutLink"
+            );
+
+
+        if(loggedInCustomer){
+
+            if(loginLink){
+
+                loginLink.style.display =
+                    "none";
+
+            }
+
+
+            if(customerWelcome){
+
+                customerWelcome.style.display =
+                    "block";
+
+
+                const welcomeText =
+                    customerWelcome.querySelector(
+                        "span"
+                    );
+
+
+                if(welcomeText){
+
+                    welcomeText.innerHTML =
+                        "👋 Welcome, " +
+                        loggedInCustomer.name;
+
+                }
+
+            }
+
+
+            if(logoutLink){
+
+                logoutLink.style.display =
+                    "block";
+
+            }
+
+        }
+
+
+        window.logoutCustomer =
+            function(){
+
+                localStorage.removeItem(
+                    "loggedInCustomer"
+                );
+
+                localStorage.removeItem(
+                    "selectedRestaurant"
+                );
+
+                window.location.href =
+                    "customer-login.html";
+
+            };
+
+
+
+        /* =================================================
+           RESTAURANT SELECTION
+        ================================================= */
+
+        let selectedRestaurant = null;
+
+
+        async function loadRestaurants(){
+
+            const select =
+                document.getElementById(
+                    "restaurantSelect"
+                );
+
+
+            if(!select){
+
+                console.error(
+                    "restaurantSelect element not found"
+                );
+
+                return;
+
+            }
+
+
+            try{
+
+                const response =
+                    await fetch(
+                        "http://localhost:8085/api/restaurants"
+                    );
+
+
+                if(!response.ok){
+
+                    throw new Error(
+                        "Unable to load restaurants"
+                    );
+
+                }
+
+
+                const restaurants =
+                    await response.json();
+
+
+                restaurants.forEach(
+                    function(restaurant){
+
+                        const option =
+                            document.createElement(
+                                "option"
+                            );
+
+
+                        option.value =
+                            restaurant.id;
+
+
+                        option.textContent =
+                            restaurant.name;
+
+
+                        option.dataset.name =
+                            restaurant.name;
+
+
+                        option.dataset.address =
+                            restaurant.address || "";
+
+
+                        option.dataset.phone =
+                            restaurant.phone || "";
+
+
+                        select.appendChild(
+                            option
+                        );
+
+                    }
+                );
+
+            }
+            catch(error){
+
+                console.error(
+                    "Restaurant loading error:",
+                    error
+                );
+
+
+                const details =
+                    document.getElementById(
+                        "restaurantDetails"
+                    );
+
+
+                if(details){
+
+                    details.innerHTML =
+                        "❌ Unable to load restaurants. Please make sure RestaurantService and API Gateway are running.";
+
+                }
+
+            }
+
+        }
+
+
+
+        window.selectRestaurant =
+            function(){
+
+                const select =
+                    document.getElementById(
+                        "restaurantSelect"
+                    );
+
+
+                const details =
+                    document.getElementById(
+                        "restaurantDetails"
+                    );
+
+
+                if(!select || !details){
+
+                    return;
+
+                }
+
+
+                if(select.value === ""){
+
+                    selectedRestaurant =
+                        null;
+
+
+                    details.innerHTML =
+                        "Please select a restaurant to continue.";
+
+                    return;
+
+                }
+
+
+                const option =
+                    select.options[
+                        select.selectedIndex
+                    ];
+
+
+                selectedRestaurant = {
+
+                    id:
+                        select.value,
+
+                    name:
+                        option.dataset.name,
+
+                    address:
+                        option.dataset.address,
+
+                    phone:
+                        option.dataset.phone
+
+                };
+
+
+                details.innerHTML = `
+
+                    <strong>
+                        ${selectedRestaurant.name}
+                    </strong>
+
+                    <br>
+
+                    📍
+                    ${selectedRestaurant.address}
+
+                    <br>
+
+                    📞
+                    ${selectedRestaurant.phone}
+
+                `;
+
+            };
+
+
+
+        /* =================================================
+           CONTINUE TO MENU
+        ================================================= */
+
+        window.continueToMenu =
+            function(){
+
+                if(!loggedInCustomer){
+
+                    alert(
+                        "❌ Please login first to continue."
+                    );
+
+
+                    window.location.href =
+                        "customer-login.html";
+
+
+                    return;
+
+                }
+
+
+                if(!selectedRestaurant){
+
+                    alert(
+                        "❌ Please select a restaurant first."
+                    );
+
+
+                    return;
+
+                }
+
+
+                localStorage.setItem(
+
+                    "selectedRestaurant",
+
+                    JSON.stringify(
+                        selectedRestaurant
+                    )
+
+                );
+
+
+                     window.open(
+    "menu.html?restaurantId=" +
+    encodeURIComponent(selectedRestaurant.id),
+    "_blank"
+);
+
+            };
+
+
+
+        /* =================================================
+           MANAGER LOGIN
+        ================================================= */
+
+        window.managerLogin =
+            function(restaurantId){
+
+                localStorage.setItem(
+
+                    "selectedManagerRestaurantId",
+
+                    String(
+                        restaurantId
+                    )
+
+                );
+
+
+                window.location.href =
+                    "manager-login.html?restaurantId=" +
+                    encodeURIComponent(
+                        restaurantId
+                    );
+
+            };
+
+
+
+        /* =================================================
+           FOOD SEARCH
+        ================================================= */
+
+        let allFoods = [];
+
+        let restaurantMap = {};
+
+
+
+        /* =================================================
+           LOAD FOODS + RESTAURANTS FOR SEARCH
+        ================================================= */
+
+        async function loadSearchData(){
+
+            try{
+
+                const menuResponse =
+                    await fetch(
+                        "http://localhost:8085/api/menu"
+                    );
+
+
+                if(!menuResponse.ok){
+
+                    throw new Error(
+                        "Unable to load menu"
+                    );
+
+                }
+
+
+                allFoods =
+                    await menuResponse.json();
+
+
+                const restaurantResponse =
+                    await fetch(
+                        "http://localhost:8085/api/restaurants"
+                    );
+
+
+                if(restaurantResponse.ok){
+
+                    const restaurants =
+                        await restaurantResponse.json();
+
+
+                    restaurants.forEach(
+                        function(restaurant){
+
+                            restaurantMap[
+                                restaurant.id
+                            ] =
+                                restaurant.name;
+
+                        }
+                    );
+
+                }
+
+
+                console.log(
+                    "Foods loaded for search:",
+                    allFoods
+                );
+
+            }
+            catch(error){
+
+                console.error(
+                    "Food search loading error:",
+                    error
+                );
+
+            }
+
+        }
+
+
+
+        /* =================================================
+           SEARCH FOOD
+        ================================================= */
+
+        window.searchFood =
+            function(){
+
+                const input =
+                    document.getElementById(
+                        "foodSearch"
+                    );
+
+
+                const results =
+                    document.getElementById(
+                        "searchResults"
+                    );
+
+
+                if(!input || !results){
+
+                    return;
+
+                }
+
+
+                const searchText =
+                    input.value
+                        .trim()
+                        .toLowerCase();
+
+
+                if(searchText === ""){
+
+                    results.innerHTML =
+                        "";
+
+                    results.style.display =
+                        "none";
+
+                    return;
+
+                }
+
+
+                if(allFoods.length === 0){
+
+                    results.innerHTML = `
+
+                        <div class="search-loading">
+
+                            ⏳ Loading foods...
+
+                        </div>
+
+                    `;
+
+
+                    results.style.display =
+                        "block";
+
+                    return;
+
+                }
+
+
+                const matchedFoods =
+                    allFoods.filter(
+                        function(food){
+
+                            const name =
+                                (
+                                    food.name || ""
+                                )
+                                .toLowerCase();
+
+
+                            const category =
+                                (
+                                    food.category || ""
+                                )
+                                .toLowerCase();
+
+
+                            const description =
+                                (
+                                    food.description || ""
+                                )
+                                .toLowerCase();
+
+
+                            return (
+                                name.includes(
+                                    searchText
+                                )
+                                ||
+                                category.includes(
+                                    searchText
+                                )
+                                ||
+                                description.includes(
+                                    searchText
+                                )
+                            );
+
+                        }
+                    );
+
+
+                results.innerHTML =
+                    "";
+
+
+                if(
+                    matchedFoods.length === 0
+                ){
+
+                    results.innerHTML = `
+
+                        <div class="search-no-result">
+
+                            ❌ No food found
+
+                            <br>
+
+                            <small>
+                                Try Pizza, Biryani,
+                                Chicken, Dosa...
+                            </small>
+
+                        </div>
+
+                    `;
+
+
+                    results.style.display =
+                        "block";
+
+                    return;
+
+                }
+
+
+                matchedFoods
+                    .slice(0,8)
+                    .forEach(
+                        function(food){
+
+                            const item =
+                                document.createElement(
+                                    "div"
+                                );
+
+
+                            item.className =
+                                "search-result-item";
+
+
+                            const restaurantName =
+                                restaurantMap[
+                                    food.restaurantId
+                                ] ||
+                                "Tasty Bites";
+
+
+                            item.innerHTML = `
+
+                                <div
+                                    class="search-food-name">
+
+                                    🍴
+                                    ${food.name}
+
+                                </div>
+
+                                <div
+                                    class="search-food-details">
+
+                                    💰
+                                    <span
+                                        class="search-food-price">
+
+                                        ₹${food.price}
+
+                                    </span>
+
+                                    &nbsp; | &nbsp;
+
+                                    🏪
+                                    ${restaurantName}
+
+                                </div>
+
+                            `;
+
+
+                            item.addEventListener(
+                                "click",
+                                function(){
+
+                                    openSearchedFood(
+                                        food
+                                    );
+
+                                }
+                            );
+
+
+                            results.appendChild(
+                                item
+                            );
+
+                        }
+                    );
+
+
+                results.style.display =
+                    "block";
+
+            };
+
+
+
+        /* =================================================
+           OPEN SEARCHED FOOD
+        ================================================= */
+
+        function openSearchedFood(food){
+
+            const restaurantName =
+                restaurantMap[
+                    food.restaurantId
+                ] ||
+                "Tasty Bites";
+
+
+            const selectedFoodRestaurant = {
+
+                id:
+                    String(
+                        food.restaurantId
+                    ),
+
+                name:
+                    restaurantName,
+
+                address:
+                    "",
+
+                phone:
+                    ""
+
+            };
+
+
+            localStorage.setItem(
+
+                "selectedRestaurant",
+
+                JSON.stringify(
+                    selectedFoodRestaurant
+                )
+
+            );
+
+
+            localStorage.setItem(
+
+                "searchFood",
+
+                JSON.stringify(
+                    food
+                )
+
+            );
+
+
+            window.location.href =
+                "menu.html?restaurantId=" +
+                encodeURIComponent(
+                    food.restaurantId
+                );
+
+        }
+
+
+
+        /* =================================================
+           ENTER KEY SEARCH
+        ================================================= */
+
+        const foodSearch =
+            document.getElementById(
+                "foodSearch"
+            );
+
+
+        if(foodSearch){
+
+            foodSearch.addEventListener(
+                "keydown",
+                function(event){
+
+                    if(
+                        event.key === "Enter"
+                    ){
+
+                        event.preventDefault();
+
+                        searchFood();
+
+                    }
+
+                }
+            );
+
+
+            foodSearch.addEventListener(
+                "input",
+                function(){
+
+                    searchFood();
+
+                }
+            );
+
+        }
+
+
+
+        /* =================================================
+           CLOSE SEARCH RESULT
+        ================================================= */
+
+        document.addEventListener(
+            "click",
+            function(event){
+
+                const searchBox =
+                    document.querySelector(
+                        ".nav-search"
+                    );
+
+
+                const results =
+                    document.getElementById(
+                        "searchResults"
+                    );
+
+
+                if(
+                    searchBox &&
+                    !searchBox.contains(
+                        event.target
+                    )
+                ){
+
+                    if(results){
+
+                        results.style.display =
+                            "none";
+
+                    }
+
+                }
+
+            }
+        );
+
+
+
+        /* =================================================
+           LOAD DATA
+        ================================================= */
+
+        loadRestaurants();
+
+        loadSearchData();
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>

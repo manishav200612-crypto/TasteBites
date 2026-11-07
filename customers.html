@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasty Bites | Customers</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            min-height: 100vh;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #fffaf3, #f6e5cf);
+            color: #222;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            margin: auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .header h1 {
+            font-size: 34px;
+            margin-bottom: 8px;
+        }
+
+        .header h1 span {
+            color: #ff9800;
+        }
+
+        .header p {
+            color: #777;
+        }
+
+        .add-customer-box {
+            background: white;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(80, 50, 20, 0.12);
+        }
+
+        .add-customer-box h2 {
+            color: #ff9800;
+            margin-bottom: 20px;
+        }
+
+        #customerForm {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 15px;
+        }
+
+        #customerForm input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        #customerForm input:focus {
+            border-color: #ff9800;
+        }
+
+        #customerForm button {
+            grid-column: 1 / -1;
+            padding: 12px;
+            border: none;
+            border-radius: 25px;
+            background: #ff9800;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #customerForm button:hover {
+            background: #e68900;
+        }
+
+        .customer-box {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(80, 50, 20, 0.12);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 850px;
+        }
+
+        th {
+            background: #ff9800;
+            color: white;
+            padding: 14px;
+            text-align: left;
+        }
+
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background: #fff8ed;
+        }
+
+        .edit-btn {
+            border: none;
+            background: #2196f3;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .edit-btn:hover {
+            background: #1976d2;
+        }
+
+        .delete-btn {
+            border: none;
+            background: #e53935;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .delete-btn:hover {
+            background: #c62828;
+        }
+
+        #message {
+            text-align: center;
+            margin-top: 25px;
+            color: #777;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 12px 22px;
+            background: #222;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+        }
+
+        .back-btn:hover {
+            background: #ff9800;
+        }
+
+        @media (max-width: 600px) {
+            #customerForm {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <div class="header">
+        <h1>👤 Tasty <span>Bites</span></h1>
+        <p>Customer Management</p>
+    </div>
+
+    <div class="add-customer-box">
+        <h2>➕ Add Customer</h2>
+
+        <form id="customerForm">
+            <input type="text"
+                   id="name"
+                   placeholder="Customer Name"
+                   pattern="[A-Za-z ]+"
+                   required>
+
+            <input type="text"
+                   id="phone"
+                   placeholder="Phone Number"
+                   pattern="[0-9]{10}"
+                   maxlength="10"
+                   inputmode="numeric"
+                   required>
+
+            <input type="email"
+                   id="email"
+                   placeholder="Email"
+                   required>
+
+            <input type="text"
+                   id="address"
+                   placeholder="Address"
+                   required>
+
+            <button type="submit">Add Customer</button>
+        </form>
+    </div>
+
+    <div class="customer-box">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody id="customerTable"></tbody>
+        </table>
+    </div>
+
+    <p id="message">Loading customers...</p>
+
+    <div style="text-align:center;">
+        <a href="menu.html" class="back-btn">← Back to Menu</a>
+    </div>
+
+</div>
+
+<script>
+    /* ==================================================
+       GET ALL CUSTOMERS
+    ================================================== */
+
+    function loadCustomers() {
+        fetch("http://localhost:8085/api/customers")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Failed to load customers");
+                }
+                return response.json();
+            })
+            .then(customers => {
+                const table = document.getElementById("customerTable");
+                table.innerHTML = "";
+
+                if (customers.length === 0) {
+                    document.getElementById("message").innerText =
+                        "No customers found.";
+                    return;
+                }
+
+                document.getElementById("message").innerText =
+                    customers.length + " customer(s) found";
+
+                customers.forEach(customer => {
+                    const row = document.createElement("tr");
+
+                    row.innerHTML = `
+                        <td>${customer.id}</td>
+                        <td>${customer.name}</td>
+                        <td>${customer.phone}</td>
+                        <td>${customer.email}</td>
+                        <td>${customer.address}</td>
+                        <td>
+                            <button
+                                class="edit-btn"
+                                onclick="editCustomer(this)">
+                                ✏️ Edit
+                            </button>
+
+                            <button
+                                class="delete-btn"
+                                onclick="deleteCustomer(${customer.id})">
+                                🗑️ Delete
+                            </button>
+                        </td>
+                    `;
+
+                    table.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error("Error:", error);
+
+                document.getElementById("message").innerText =
+                    "❌ Unable to load customers.";
+            });
+    }
+
+
+    /* ==================================================
+       ADD CUSTOMER
+    ================================================== */
+
+    document.getElementById("customerForm").addEventListener(
+        "submit",
+        function(event) {
+
+            event.preventDefault();
+
+            const name =
+                document.getElementById("name").value.trim();
+
+            const phone =
+                document.getElementById("phone").value.trim();
+
+            const email =
+                document.getElementById("email").value.trim();
+
+            const address =
+                document.getElementById("address").value.trim();
+
+
+            /* ================= VALIDATION ================= */
+
+            if (!/^[A-Za-z ]+$/.test(name)) {
+                alert("❌ Name should contain letters only.");
+                return;
+            }
+
+            if (!/^[0-9]{10}$/.test(phone)) {
+                alert("❌ Phone number must contain exactly 10 digits.");
+                return;
+            }
+
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                alert("❌ Please enter a valid email address.");
+                return;
+            }
+
+            if (address === "") {
+                alert("❌ Address cannot be empty.");
+                return;
+            }
+
+
+            const customerData = {
+                name: name,
+                phone: phone,
+                email: email,
+                address: address
+            };
+
+
+            fetch("http://localhost:8085/api/customers", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(customerData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Failed to add customer");
+                }
+
+                return response.json();
+            })
+            .then(customer => {
+                alert("✅ Customer added successfully!");
+
+                document.getElementById("customerForm").reset();
+
+                loadCustomers();
+            })
+            .catch(error => {
+                console.error("Add Customer Error:", error);
+
+                alert("❌ Unable to add customer.");
+            });
+        }
+    );
+
+
+    /* ==================================================
+       EDIT CUSTOMER
+    ================================================== */
+
+    function editCustomer(button) {
+
+        const row = button.closest("tr");
+
+        const id =
+            row.cells[0].innerText.trim();
+
+        const currentName =
+            row.cells[1].innerText.trim();
+
+        const currentPhone =
+            row.cells[2].innerText.trim();
+
+        const currentEmail =
+            row.cells[3].innerText.trim();
+
+        const currentAddress =
+            row.cells[4].innerText.trim();
+
+
+        const newName =
+            prompt("Enter Customer Name:", currentName);
+
+        if (newName === null) {
+            return;
+        }
+
+
+        const newPhone =
+            prompt("Enter Phone Number:", currentPhone);
+
+        if (newPhone === null) {
+            return;
+        }
+
+
+        const newEmail =
+            prompt("Enter Email:", currentEmail);
+
+        if (newEmail === null) {
+            return;
+        }
+
+
+        const newAddress =
+            prompt("Enter Address:", currentAddress);
+
+        if (newAddress === null) {
+            return;
+        }
+
+
+        /* ==================================================
+           EDIT CUSTOMER VALIDATION
+           IMPORTANT: validation is INSIDE editCustomer()
+        ================================================== */
+
+        const cleanName = newName.trim();
+        const cleanPhone = newPhone.trim();
+        const cleanEmail = newEmail.trim();
+        const cleanAddress = newAddress.trim();
+
+
+        if (!/^[A-Za-z ]+$/.test(cleanName)) {
+            alert("❌ Name should contain letters only.");
+            return;
+        }
+
+
+        if (!/^[0-9]{10}$/.test(cleanPhone)) {
+            alert("❌ Phone number must contain exactly 10 digits.");
+            return;
+        }
+
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)) {
+            alert("❌ Please enter a valid email address.");
+            return;
+        }
+
+
+        if (cleanAddress === "") {
+            alert("❌ Address cannot be empty.");
+            return;
+        }
+
+
+        const customerData = {
+            name: cleanName,
+            phone: cleanPhone,
+            email: cleanEmail,
+            address: cleanAddress
+        };
+
+
+        fetch(`http://localhost:8085/api/customers/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(customerData)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Update failed");
+            }
+
+            return response.json();
+        })
+        .then(customer => {
+            alert("✅ Customer updated successfully!");
+
+            loadCustomers();
+        })
+        .catch(error => {
+            console.error("Update Error:", error);
+
+            alert("❌ Unable to update customer.");
+        });
+    }
+
+
+    /* ==================================================
+       DELETE CUSTOMER
+    ================================================== */
+
+    function deleteCustomer(id) {
+
+        if (!confirm(
+            "Are you sure you want to delete this customer?"
+        )) {
+            return;
+        }
+
+
+        fetch(`http://localhost:8085/api/customers/${id}`, {
+            method: "DELETE"
+        })
+        .then(response => {
+
+            if (
+                response.status === 200 ||
+                response.status === 204
+            ) {
+                alert("✅ Customer deleted successfully!");
+
+                loadCustomers();
+            }
+            else {
+                throw new Error("Delete failed");
+            }
+        })
+        .catch(error => {
+
+            console.error("Delete Error:", error);
+
+            alert("❌ Unable to delete customer.");
+        });
+    }
+
+
+    /* ==================================================
+       LOAD CUSTOMERS WHEN PAGE OPENS
+    ================================================== */
+
+    loadCustomers();
+
+</script>
+
+</body>
+</html>

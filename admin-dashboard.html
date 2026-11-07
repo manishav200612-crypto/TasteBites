@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Tasty Bites - Admin Dashboard</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f8f3e8, #fffaf0);
+            color: #183528;
+            min-height: 100vh;
+        }
+
+
+        /* ================= NAVBAR ================= */
+
+        nav {
+            background: #0b1a13;
+            padding: 18px 50px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo {
+            color: #ffffff;
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #e89b2d;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: white;
+
+            background: #e89b2d;
+
+            padding: 10px 20px;
+
+            border-radius: 25px;
+
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #d4871e;
+            transform: translateY(-2px);
+        }
+
+
+        /* ================= MAIN ================= */
+
+        .container {
+            max-width: 1200px;
+
+            margin: auto;
+
+            padding: 55px 25px;
+        }
+
+
+        /* ================= TITLE ================= */
+
+        .title {
+            text-align: center;
+
+            margin-bottom: 45px;
+        }
+
+        .title h1 {
+            font-size: 38px;
+
+            color: #183528;
+
+            margin-bottom: 10px;
+        }
+
+        .title h1 span {
+            color: #e89b2d;
+        }
+
+        .title p {
+            color: #6f675c;
+
+            font-size: 16px;
+        }
+
+
+        /* ================= DASHBOARD CARDS ================= */
+
+        .dashboard-grid {
+
+            display: grid;
+
+            grid-template-columns:
+            repeat(4, 1fr);
+
+            gap: 25px;
+        }
+
+        .dashboard-card {
+
+            background: #ffffff;
+
+            padding: 30px 20px;
+
+            border-radius: 22px;
+
+            text-align: center;
+
+            border: 1px solid #eadfce;
+
+            box-shadow:
+                0 12px 30px rgba(30, 50, 35, 0.10);
+
+            transition: 0.3s;
+
+            text-decoration: none;
+
+            color: #183528;
+        }
+
+        .dashboard-card:hover {
+
+            transform: translateY(-8px);
+
+            box-shadow:
+                0 18px 40px rgba(30, 50, 35, 0.16);
+        }
+
+        .icon {
+
+            font-size: 42px;
+
+            margin-bottom: 15px;
+        }
+
+        .dashboard-card h2 {
+
+            font-size: 38px;
+
+            color: #183528;
+
+            margin-bottom: 8px;
+        }
+
+        .dashboard-card p {
+
+            color: #6f675c;
+
+            font-size: 16px;
+
+            font-weight: 600;
+        }
+
+
+        /* ================= RECENT ORDERS ================= */
+
+        .recent-orders {
+
+            margin-top: 50px;
+
+            background: #ffffff;
+
+            padding: 35px;
+
+            border-radius: 25px;
+
+            border: 1px solid #eadfce;
+
+            box-shadow:
+                0 12px 35px rgba(30, 50, 35, 0.10);
+        }
+
+        .recent-title {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 25px;
+        }
+
+        .recent-title h2 {
+
+            color: #183528;
+
+            font-size: 26px;
+        }
+
+        .recent-title span {
+
+            color: #e89b2d;
+
+            font-size: 14px;
+
+            font-weight: bold;
+        }
+
+
+        /* ================= TABLE ================= */
+
+        .table-container {
+
+            overflow-x: auto;
+        }
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 750px;
+        }
+
+        thead {
+
+            background: #183528;
+
+            color: #fff8e8;
+        }
+
+        th {
+
+            padding: 15px;
+
+            text-align: left;
+
+            font-size: 14px;
+        }
+
+        td {
+
+            padding: 15px;
+
+            border-bottom: 1px solid #eee5d5;
+
+            color: #4b443b;
+
+            font-size: 14px;
+        }
+
+        tbody tr {
+
+            transition: 0.2s;
+        }
+
+        tbody tr:hover {
+
+            background: #fffaf0;
+        }
+
+
+        /* ================= STATUS ================= */
+
+        .status {
+
+            display: inline-block;
+
+            padding: 6px 12px;
+
+            border-radius: 20px;
+
+            background: #fff0d4;
+
+            color: #b56c00;
+
+            font-size: 12px;
+
+            font-weight: bold;
+        }
+
+
+        /* ================= NO ORDERS ================= */
+
+        .no-orders {
+
+            text-align: center;
+
+            padding: 35px;
+
+            color: #777;
+
+            display: none;
+        }
+
+
+        /* ================= QUICK ACTIONS ================= */
+
+        .quick-actions {
+
+            margin-top: 50px;
+
+            background: #183528;
+
+            padding: 35px;
+
+            border-radius: 25px;
+
+            text-align: center;
+
+            box-shadow:
+                0 15px 40px rgba(16, 37, 27, 0.18);
+        }
+
+        .quick-actions h2 {
+
+            color: #fff8e8;
+
+            margin-bottom: 25px;
+
+            font-size: 25px;
+        }
+
+        .action-buttons {
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 15px;
+
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+
+            text-decoration: none;
+
+            background: #e89b2d;
+
+            color: white;
+
+            padding: 13px 24px;
+
+            border-radius: 25px;
+
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+        .action-btn:hover {
+
+            background: #d4871e;
+
+            transform: translateY(-3px);
+        }
+
+
+        /* ================= FOOTER ================= */
+
+        footer {
+
+            margin-top: 50px;
+
+            background: #0b1a13;
+
+            color: #c9d3cc;
+
+            text-align: center;
+
+            padding: 20px;
+
+            font-size: 14px;
+        }
+
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 900px) {
+
+            .dashboard-grid {
+
+                grid-template-columns:
+                repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            nav {
+
+                padding: 15px 20px;
+            }
+
+            .logo {
+
+                font-size: 21px;
+            }
+
+            .title h1 {
+
+                font-size: 30px;
+            }
+
+            .dashboard-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+
+                padding: 40px 18px;
+            }
+
+            .recent-orders {
+
+                padding: 20px;
+            }
+
+            .recent-title {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 8px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav>
+
+        <div class="logo">
+
+            🍴 Tasty<span>Bites</span>
+
+        </div>
+
+        <a
+            href="index.html"
+            class="back-btn">
+
+            🏠 Back to Home
+
+        </a>
+
+    </nav>
+
+
+
+    <!-- ================= MAIN ================= -->
+
+    <div class="container">
+
+
+        <!-- TITLE -->
+
+        <div class="title">
+
+            <h1>
+
+                Admin <span>Dashboard</span>
+
+            </h1>
+
+            <p>
+
+                Manage your restaurant from one place
+
+            </p>
+
+        </div>
+
+
+
+        <!-- ================= DASHBOARD CARDS ================= -->
+
+        <div class="dashboard-grid">
+
+
+            <!-- CUSTOMERS -->
+
+            <a
+                href="customers.html"
+                class="dashboard-card">
+
+                <div class="icon">
+                    👥
+                </div>
+
+                <h2 id="customerCount">
+                    0
+                </h2>
+
+                <p>
+                    Customers
+                </p>
+
+            </a>
+
+
+
+            <!-- ORDERS -->
+
+            <a
+                href="orders.html"
+                class="dashboard-card">
+
+                <div class="icon">
+                    🛒
+                </div>
+
+                <h2 id="orderCount">
+                    0
+                </h2>
+
+                <p>
+                    Orders
+                </p>
+
+            </a>
+
+
+
+            <!-- MENU -->
+
+            <div class="dashboard-card">
+
+                <div class="icon">
+                    🍽️
+                </div>
+
+                <h2 id="menuCount">
+                    0
+                </h2>
+
+                <p>
+                    Menu Items
+                </p>
+
+            </div>
+
+
+
+            <!-- MESSAGES -->
+
+            <div class="dashboard-card">
+
+                <div class="icon">
+                    💬
+                </div>
+
+                <h2 id="messageCount">
+                    0
+                </h2>
+
+                <p>
+                    Messages
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ================= RECENT ORDERS ================= -->
+
+        <div class="recent-orders">
+
+            <div class="recent-title">
+
+                <h2>
+                    📋 Recent Orders
+                </h2>
+
+                <span>
+                    Latest Orders
+                </span>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Customer
+                            </th>
+
+                            <th>
+                                Food
+                            </th>
+
+                            <th>
+                                Quantity
+                            </th>
+
+                            <th>
+                                Total
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="recentOrdersBody">
+
+                    </tbody>
+
+                </table>
+
+
+                <div
+                    class="no-orders"
+                    id="noOrders">
+
+                    📭 No orders available
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ================= QUICK ACTIONS ================= -->
+
+        <div class="quick-actions">
+
+            <h2>
+                ⚡ Quick Actions
+            </h2>
+
+
+            <div class="action-buttons">
+
+                <a
+                    href="customers.html"
+                    class="action-btn">
+
+                    👥 Customers
+
+                </a>
+
+
+                <a
+                    href="orders.html"
+                    class="action-btn">
+
+                    🛒 Orders
+
+                </a>
+
+
+                <a
+                    href="menu-management.html"
+                    class="action-btn">
+
+                    🍽️ Menu Management
+
+                </a>
+
+
+                <a
+                    href="contact-messages.html"
+                    class="action-btn">
+
+                    💬 Messages
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        © 2026 Tasty Bites | Admin Dashboard
+
+    </footer>
+
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+
+        async function loadDashboard() {
+
+            try {
+
+
+                /* GET CUSTOMERS */
+
+                const customersResponse =
+                    await fetch(
+                        "http://localhost:8085/api/customers"
+                    );
+
+
+                /* GET ORDERS */
+
+                const ordersResponse =
+                    await fetch(
+                        "http://localhost:8085/api/orders"
+                    );
+
+
+                /* GET MENU */
+
+                const menuResponse =
+                    await fetch(
+                        "http://localhost:8085/api/menu"
+                    );
+
+
+                /* GET MESSAGES */
+
+                const messagesResponse =
+                    await fetch(
+                        "http://localhost:8085/api/contact"
+                    );
+
+
+                const customers =
+                    await customersResponse.json();
+
+
+                const orders =
+                    await ordersResponse.json();
+
+
+                const menu =
+                    await menuResponse.json();
+
+
+                const messages =
+                    await messagesResponse.json();
+
+
+
+                /* UPDATE COUNTS */
+
+                document.getElementById(
+                    "customerCount"
+                ).textContent =
+                    customers.length;
+
+
+                document.getElementById(
+                    "orderCount"
+                ).textContent =
+                    orders.length;
+
+
+                document.getElementById(
+                    "menuCount"
+                ).textContent =
+                    menu.length;
+
+
+                document.getElementById(
+                    "messageCount"
+                ).textContent =
+                    messages.length;
+
+
+
+                /* ================= RECENT ORDERS ================= */
+
+                const ordersBody =
+                    document.getElementById(
+                        "recentOrdersBody"
+                    );
+
+                const noOrders =
+                    document.getElementById(
+                        "noOrders"
+                    );
+
+
+                ordersBody.innerHTML = "";
+
+
+                if (orders.length === 0) {
+
+                    noOrders.style.display = "block";
+
+                } else {
+
+                    noOrders.style.display = "none";
+
+
+                    /* Show latest 5 orders */
+
+                    const recentOrders =
+                        orders.slice(-5).reverse();
+
+
+                    recentOrders.forEach(
+                        function(order) {
+
+
+                            const row =
+                                document.createElement("tr");
+
+
+                            row.innerHTML = `
+
+                                <td>
+                                    ${order.customerName}
+                                </td>
+
+                                <td>
+                                    ${order.foodName}
+                                </td>
+
+                                <td>
+                                    ${order.quantity}
+                                </td>
+
+                                <td>
+                                    ₹${order.totalPrice}
+                                </td>
+
+                                <td>
+
+                                    <span class="status">
+
+                                        ${order.status}
+
+                                    </span>
+
+                                </td>
+
+                            `;
+
+
+                            ordersBody.appendChild(row);
+
+                        }
+                    );
+
+                }
+
+
+            } catch (error) {
+
+                console.error(
+                    "Dashboard Error:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        /* LOAD DASHBOARD */
+
+        loadDashboard();
+
+
+    </script>
+
+
+</body>
+
+</html>

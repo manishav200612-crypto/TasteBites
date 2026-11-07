@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Tasty Bites | Gallery</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+
+        body {
+            background: #f8f3e8;
+            color: #3a2f24;
+        }
+
+
+        /* ================= NAVBAR ================= */
+
+        nav {
+            height: 70px;
+            background: #0b1a13;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+        }
+
+
+        .logo {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+
+        .logo span {
+            color: #e89b2d;
+        }
+
+
+        .nav-links {
+            display: flex;
+            gap: 35px;
+        }
+
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+
+        .nav-links a:hover {
+            color: #e89b2d;
+        }
+
+
+        .nav-links .active {
+            color: #e89b2d;
+        }
+
+
+        /* ================= HERO ================= */
+
+        .hero {
+            background:
+                linear-gradient(
+                    rgba(16, 37, 27, 0.88),
+                    rgba(16, 37, 27, 0.88)
+                );
+
+            padding: 70px 20px;
+            text-align: center;
+            color: white;
+        }
+
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+
+        .hero h1 span {
+            color: #e89b2d;
+        }
+
+
+        .hero p {
+            color: #d2dbd5;
+            font-size: 17px;
+        }
+
+
+        .line {
+            width: 70px;
+            height: 4px;
+            background: #e89b2d;
+            border-radius: 10px;
+            margin: 20px auto;
+        }
+
+
+        /* ================= GALLERY SECTION ================= */
+
+        .gallery-section {
+            width: 90%;
+            max-width: 1250px;
+            margin: 55px auto;
+        }
+
+
+        .gallery-title {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+
+        .gallery-title h2 {
+            font-size: 32px;
+            color: #183528;
+        }
+
+
+        .gallery-title p {
+            color: #756d63;
+            margin-top: 8px;
+        }
+
+
+        /* ================= GALLERY GRID ================= */
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+
+        .gallery-card {
+            background: white;
+            border-radius: 18px;
+            overflow: hidden;
+
+            box-shadow:
+                0 10px 30px
+                rgba(40, 50, 35, 0.12);
+
+            transition: 0.35s;
+        }
+
+
+        .gallery-card:hover {
+            transform: translateY(-8px);
+
+            box-shadow:
+                0 18px 40px
+                rgba(40, 50, 35, 0.20);
+        }
+
+
+        .image-container {
+            overflow: hidden;
+        }
+
+
+        .gallery-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+            transition: 0.4s;
+        }
+
+
+        .gallery-card:hover .gallery-image {
+            transform: scale(1.05);
+        }
+
+
+        .gallery-info {
+            padding: 18px;
+            text-align: center;
+        }
+
+
+        .gallery-info h3 {
+            color: #183528;
+            font-size: 20px;
+            margin-bottom: 6px;
+        }
+
+
+        .gallery-info p {
+            color: #756d63;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+
+        /* ================= CTA ================= */
+
+        .cta {
+            margin-top: 70px;
+            background: #183528;
+            padding: 55px 20px;
+            text-align: center;
+            color: white;
+        }
+
+
+        .cta h2 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+
+        .cta p {
+            color: #c9d3cc;
+            margin-bottom: 25px;
+        }
+
+
+        .cta-btn {
+            display: inline-block;
+            text-decoration: none;
+            background: #e89b2d;
+            color: white;
+            padding: 13px 28px;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+
+        .cta-btn:hover {
+            background: #d4871e;
+            transform: translateY(-2px);
+        }
+
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: #0b1a13;
+            color: #c9d3cc;
+            text-align: center;
+            padding: 25px;
+            font-size: 14px;
+        }
+
+
+        footer span {
+            color: #e89b2d;
+            font-weight: bold;
+        }
+
+
+        /* ================= TABLET ================= */
+
+        @media (max-width: 900px) {
+
+            .gallery {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 550px) {
+
+            nav {
+                height: auto;
+                padding: 18px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+
+            .nav-links {
+                gap: 18px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+
+            .hero h1 {
+                font-size: 36px;
+            }
+
+
+            .gallery {
+                grid-template-columns: 1fr;
+            }
+
+
+            .gallery-section {
+                width: 94%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav>
+
+        <div class="logo">
+
+            👨‍🍳 Tasty <span>Bites</span>
+
+        </div>
+
+
+        <div class="nav-links">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="menu.html">
+                Menu
+            </a>
+
+            <a href="gallery.html" class="active">
+                Gallery
+            </a>
+
+            <a href="contact.html">
+                Contact
+            </a>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- ================= HERO ================= -->
+
+    <section class="hero">
+
+        <h1>
+
+            Our Food
+            <span>Gallery</span>
+
+        </h1>
+
+
+        <div class="line"></div>
+
+
+        <p>
+
+            A visual taste of our delicious dishes
+
+        </p>
+
+    </section>
+
+
+
+    <!-- ================= GALLERY ================= -->
+
+    <section class="gallery-section">
+
+
+        <div class="gallery-title">
+
+            <h2>
+                Delicious Moments 🍽️
+            </h2>
+
+            <p>
+                Explore our delicious and freshly prepared dishes
+            </p>
+
+        </div>
+
+
+
+        <div class="gallery">
+
+
+            <!-- 1. PIZZA -->
+
+            <div class="gallery-card">
+
+                <div class="image-container">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=900&q=85"
+                        class="gallery-image"
+                        alt="Special Pizza">
+
+                </div>
+
+
+                <div class="gallery-info">
+
+                    <h3>
+                        🍕 Special Pizza
+                    </h3>
+
+                    <p>
+                        Freshly baked pizza with delicious toppings
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- 2. BIRYANI -->
+
+            <div class="gallery-card">
+
+                <div class="image-container">
+
+
+                    <img
+    src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=900&q=85"
+    class="gallery-image"
+    alt="Chicken Biryani">
+
+                  
+
+                   
+
+                </div>
+
+
+                <div class="gallery-info">
+
+                    <h3>
+                        🍛 Chicken Biryani
+                    </h3>
+
+                    <p>
+                        Aromatic basmati rice with tender chicken
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- 3. BURGER -->
+
+            <div class="gallery-card">
+
+                <div class="image-container">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=85"
+                        class="gallery-image"
+                        alt="Chicken Burger">
+
+                </div>
+
+
+                <div class="gallery-info">
+
+                    <h3>
+                        🍔 Juicy Burger
+                    </h3>
+
+                    <p>
+                        Juicy chicken burger with fresh vegetables
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- 4. PASTA -->
+
+            <div class="gallery-card">
+
+                <div class="image-container">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1776810250123-119d15036790?auto=format&fit=crop&w=900&q=85"
+                        class="gallery-image"
+                        alt="Creamy Pasta">
+
+                </div>
+
+
+                <div class="gallery-info">
+
+                    <h3>
+                        🍝 Creamy Pasta
+                    </h3>
+
+                    <p>
+                        Delicious pasta with rich creamy flavours
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- 5. FISH -->
+
+            <div class="gallery-card">
+
+                <div class="image-container">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=900&q=85"
+                        class="gallery-image"
+                        alt="Fish Fry">
+
+                </div>
+
+
+                <div class="gallery-info">
+
+                    <h3>
+                        🐟 Crispy Fish Fry
+                    </h3>
+
+                    <p>
+                        Fresh fish seasoned and fried to perfection
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- 6. CHICKEN 65 -->
+
+            <div class="gallery-card">
+
+                <div class="image-container">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1658249499954-4aad343157f9?auto=format&fit=crop&w=900&q=85"
+                        class="gallery-image"
+                        alt="Chicken 65">
+
+                </div>
+
+
+                <div class="gallery-info">
+
+                    <h3>
+                        🍗 Chicken 65
+                    </h3>
+
+                    <p>
+                        Spicy and crispy chicken starter
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- 7. SANDWICH -->
+
+            <div class="gallery-card">
+
+                <div class="image-container">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=900&q=85"
+                        class="gallery-image"
+                        alt="Fresh Sandwich">
+
+                </div>
+
+
+                <div class="gallery-info">
+
+                    <h3>
+                        🥪 Fresh Sandwich
+                    </h3>
+
+                    <p>
+                        Fresh vegetables with delicious filling
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- 8. DOSA -->
+
+            <div class="gallery-card">
+
+                <div class="image-container">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1668236543090-82eba5ee5976?auto=format&fit=crop&w=900&q=85"
+                        class="gallery-image"
+                        alt="South Indian Dosa">
+
+                </div>
+
+
+                <div class="gallery-info">
+
+                    <h3>
+                        🥞 South Indian Dosa
+                    </h3>
+
+                    <p>
+                        Crispy traditional South Indian dosa
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- 9. CHICKEN NOODLES -->
+
+            <div class="gallery-card">
+
+                <div class="image-container">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&w=900&q=85"
+                        class="gallery-image"
+                        alt="Chicken Noodles">
+
+                </div>
+
+
+                <div class="gallery-info">
+
+                    <h3>
+                        🍜 Chicken Noodles
+                    </h3>
+
+                    <p>
+                        Spicy noodles tossed with chicken and vegetables
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- 10. FRENCH FRIES -->
+
+            <div class="gallery-card">
+
+                <div class="image-container">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=900&q=85"
+                        class="gallery-image"
+                        alt="French Fries">
+
+                </div>
+
+
+                <div class="gallery-info">
+
+                    <h3>
+                        🍟 French Fries
+                    </h3>
+
+                    <p>
+                        Golden crispy fries with a delicious crunch
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- 11. CHICKEN ROLL -->
+
+            <div class="gallery-card">
+
+                <div class="image-container">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=900&q=85"
+                        class="gallery-image"
+                        alt="Chicken Roll">
+
+                </div>
+
+
+                <div class="gallery-info">
+
+                    <h3>
+                        🌯 Chicken Roll
+                    </h3>
+
+                    <p>
+                        Soft wrap filled with spicy chicken and vegetables
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- 12. PRAWN FRY -->
+
+            <div class="gallery-card">
+
+                <div class="image-container">
+
+                   <img
+    src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Prawns%20fry2.jpg?width=900"
+    class="gallery-image"
+    alt="Prawn Fry">
+
+                </div>
+
+
+                <div class="gallery-info">
+
+                    <h3>
+                        🍤 Prawn Fry
+                    </h3>
+
+                    <p>
+                        Crispy and flavourful fried prawns
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- 13. CHICKEN TIKKA -->
+
+            <div class="gallery-card">
+
+                <div class="image-container">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?auto=format&fit=crop&w=900&q=85"
+                        class="gallery-image"
+                        alt="Chicken Tikka">
+
+                </div>
+
+
+                <div class="gallery-info">
+
+                    <h3>
+                        🍢 Chicken Tikka
+                    </h3>
+
+                    <p>
+                        Tender chicken grilled with aromatic spices
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- 14. CHOCOLATE CAKE -->
+
+            <div class="gallery-card">
+
+                <div class="image-container">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=900&q=85"
+                        class="gallery-image"
+                        alt="Chocolate Cake">
+
+                </div>
+
+
+                <div class="gallery-info">
+
+                    <h3>
+                        🍰 Chocolate Cake
+                    </h3>
+
+                    <p>
+                        Soft and delicious chocolate cake
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- 15. ICE CREAM -->
+
+            <div class="gallery-card">
+
+                <div class="image-container">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=900&q=85"
+                        class="gallery-image"
+                        alt="Ice Cream">
+
+                </div>
+
+
+                <div class="gallery-info">
+
+                    <h3>
+                        🍨 Ice Cream
+                    </h3>
+
+                    <p>
+                        Creamy and refreshing dessert
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= CTA ================= -->
+
+    <section class="cta">
+
+        <h2>
+            Hungry Already? 😋
+        </h2>
+
+
+        <p>
+            Explore our menu and order your favourite food.
+        </p>
+
+
+        <a
+            href="menu.html"
+            class="cta-btn">
+
+            🍽️ Explore Menu
+
+        </a>
+
+    </section>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        © 2026
+
+        <span>
+            Tasty Bites
+        </span>
+
+        | Restaurant Management System
+
+    </footer>
+
+
+</body>
+
+</html>

@@ -1,0 +1,1618 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>My Orders | Tasty Bites</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+
+            min-height: 100vh;
+
+            background:
+                radial-gradient(
+                    circle at 10% 10%,
+                    rgba(232, 155, 45, 0.15),
+                    transparent 25%
+                ),
+                radial-gradient(
+                    circle at 90% 20%,
+                    rgba(24, 53, 40, 0.12),
+                    transparent 25%
+                ),
+                linear-gradient(
+                    135deg,
+                    #f8f3e8,
+                    #eee1ca
+                );
+
+            color: #3a2f24;
+        }
+
+
+        /* ================= NAVBAR ================= */
+
+        nav {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #10251b,
+                    #183528
+                );
+
+            padding: 18px 30px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            flex-wrap: wrap;
+
+            box-shadow:
+                0 5px 20px
+                rgba(16, 37, 27, 0.25);
+        }
+
+        .logo {
+
+            color: #fff8e8;
+
+            font-size: 27px;
+
+            font-weight: bold;
+        }
+
+        .logo span {
+
+            color: #e89b2d;
+        }
+
+        .nav-links {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 20px;
+        }
+
+        .nav-links a {
+
+            color: #d9dfd9;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: 500;
+
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+
+            color: #e89b2d;
+        }
+
+
+        /* ================= PAGE ================= */
+
+        .container {
+
+            width: 100%;
+
+            max-width: 1050px;
+
+            margin: auto;
+
+            padding: 45px 20px 70px;
+        }
+
+
+        /* ================= HEADER ================= */
+
+        .page-header {
+
+            text-align: center;
+
+            margin-bottom: 35px;
+        }
+
+        .page-icon {
+
+            width: 75px;
+
+            height: 75px;
+
+            margin: auto;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #e89b2d,
+                    #d4871e
+                );
+
+            font-size: 38px;
+
+            box-shadow:
+                0 10px 25px
+                rgba(232, 155, 45, 0.25);
+        }
+
+        .page-header h1 {
+
+            margin-top: 15px;
+
+            color: #183528;
+
+            font-size: 34px;
+        }
+
+        .page-header h1 span {
+
+            color: #d4871e;
+        }
+
+        .page-header p {
+
+            margin-top: 8px;
+
+            color: #777;
+
+            font-size: 14px;
+        }
+
+        .line {
+
+            width: 65px;
+
+            height: 4px;
+
+            margin: 13px auto;
+
+            border-radius: 20px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #e89b2d,
+                    #d4871e
+                );
+        }
+
+
+        /* ================= CUSTOMER INFO ================= */
+
+        .customer-info {
+
+            background: #fffaf0;
+
+            border-radius: 18px;
+
+            padding: 20px 25px;
+
+            margin-bottom: 25px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            box-shadow:
+                0 10px 30px
+                rgba(30, 50, 35, 0.10);
+        }
+
+        .customer-info h3 {
+
+            color: #183528;
+
+            margin-bottom: 5px;
+        }
+
+        .customer-info p {
+
+            color: #777;
+
+            font-size: 14px;
+        }
+
+        .refresh-btn {
+
+            width: auto;
+
+            margin: 0;
+
+            padding: 11px 20px;
+
+            border: none;
+
+            border-radius: 25px;
+
+            background: #183528;
+
+            color: white;
+
+            cursor: pointer;
+
+            font-weight: 600;
+
+            transition: 0.3s;
+        }
+
+        .refresh-btn:hover {
+
+            background: #24523c;
+
+            transform: translateY(-2px);
+        }
+
+
+        /* ================= ORDER CARD ================= */
+
+        .order-card {
+
+            background: #fffaf0;
+
+            border-radius: 22px;
+
+            padding: 25px;
+
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 15px 40px
+                rgba(30, 50, 35, 0.12);
+
+            border:
+                1px solid
+                rgba(232, 155, 45, 0.18);
+        }
+
+
+        /* ================= ORDER TOP ================= */
+
+        .order-top {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            padding-bottom: 18px;
+
+            border-bottom:
+                1px solid
+                #e4d7c2;
+        }
+
+        .order-id {
+
+            color: #183528;
+
+            font-size: 20px;
+
+            font-weight: bold;
+        }
+
+        .order-id span {
+
+            color: #d4871e;
+        }
+
+
+        /* ================= STATUS ================= */
+
+        .status {
+
+            padding: 7px 15px;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+
+            font-weight: bold;
+
+            white-space: nowrap;
+        }
+
+        .status.pending {
+
+            background: #fff0c9;
+
+            color: #a86a00;
+        }
+
+        .status.preparing {
+
+            background: #e4efff;
+
+            color: #2365a8;
+        }
+
+        .status.ready {
+
+            background: #e8dcff;
+
+            color: #6936a3;
+        }
+
+        .status.out {
+
+            background: #ffe3d2;
+
+            color: #b94f15;
+        }
+
+        .status.delivered {
+
+            background: #d9f5e4;
+
+            color: #187443;
+        }
+
+
+        /* ================= RESTAURANT ================= */
+
+        .restaurant-info {
+
+            margin-top: 18px;
+
+            padding: 13px 15px;
+
+            background: #f5ecdc;
+
+            border-radius: 12px;
+
+            color: #3a2f24;
+
+            font-size: 14px;
+        }
+
+
+        /* ================= ITEMS ================= */
+
+        .items-title {
+
+            margin-top: 22px;
+
+            margin-bottom: 10px;
+
+            color: #183528;
+
+            font-size: 16px;
+        }
+
+        .order-item {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            padding: 13px 5px;
+
+            border-bottom:
+                1px solid
+                #eee2d0;
+        }
+
+        .order-item:last-child {
+
+            border-bottom: none;
+        }
+
+        .food-name {
+
+            font-weight: 600;
+
+            flex: 1;
+        }
+
+        .food-quantity {
+
+            color: #777;
+
+            font-size: 13px;
+
+            white-space: nowrap;
+        }
+
+        .food-price {
+
+            color: #d4871e;
+
+            font-weight: bold;
+
+            white-space: nowrap;
+        }
+
+
+        /* ================= TOTAL ================= */
+
+        .order-bottom {
+
+            margin-top: 18px;
+
+            padding-top: 17px;
+
+            border-top:
+                2px solid
+                #d8c5a6;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+        }
+
+        .total-label {
+
+            color: #183528;
+
+            font-weight: bold;
+
+            font-size: 17px;
+        }
+
+        .total-price {
+
+            color: #d4871e;
+
+            font-size: 22px;
+
+            font-weight: bold;
+        }
+
+
+        /* ================= DELIVERY ================= */
+
+        .delivery-box {
+
+            margin-top: 18px;
+
+            background: #edf5ef;
+
+            border:
+                1px solid
+                #c8ddce;
+
+            border-radius: 13px;
+
+            padding: 15px;
+        }
+
+        .delivery-box h4 {
+
+            color: #183528;
+
+            margin-bottom: 8px;
+        }
+
+        .delivery-box p {
+
+            font-size: 13px;
+
+            color: #555;
+
+            margin: 4px 0;
+        }
+
+
+        /* ================= ADDRESS ================= */
+
+        .address-box {
+
+            margin-top: 15px;
+
+            padding: 13px 15px;
+
+            background: #faf5eb;
+
+            border-radius: 12px;
+
+            font-size: 13px;
+
+            color: #666;
+        }
+
+
+        /* ================= EMPTY ================= */
+
+        .empty-box {
+
+            background: #fffaf0;
+
+            border-radius: 22px;
+
+            padding: 55px 25px;
+
+            text-align: center;
+
+            box-shadow:
+                0 15px 40px
+                rgba(30, 50, 35, 0.10);
+        }
+
+        .empty-box .icon {
+
+            font-size: 55px;
+
+            margin-bottom: 15px;
+        }
+
+        .empty-box h2 {
+
+            color: #183528;
+
+            margin-bottom: 8px;
+        }
+
+        .empty-box p {
+
+            color: #777;
+
+            margin-bottom: 20px;
+        }
+
+        .menu-btn {
+
+            display: inline-block;
+
+            text-decoration: none;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #e89b2d,
+                    #d4871e
+                );
+
+            color: white;
+
+            padding: 12px 24px;
+
+            border-radius: 25px;
+
+            font-weight: bold;
+        }
+
+
+        /* ================= LOADING ================= */
+
+        .loading {
+
+            text-align: center;
+
+            padding: 50px;
+
+            color: #777;
+
+            font-size: 16px;
+        }
+
+
+        /* ================= ERROR ================= */
+
+        .error-box {
+
+            background: #fff0f0;
+
+            border:
+                1px solid
+                #efb2b2;
+
+            color: #b42323;
+
+            padding: 18px;
+
+            border-radius: 15px;
+
+            text-align: center;
+        }
+
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 650px) {
+
+            nav {
+
+                justify-content: center;
+
+                gap: 15px;
+            }
+
+            .nav-links {
+
+                gap: 10px;
+
+                flex-wrap: wrap;
+
+                justify-content: center;
+            }
+
+            .container {
+
+                padding: 30px 14px 50px;
+            }
+
+            .page-header h1 {
+
+                font-size: 28px;
+            }
+
+            .customer-info {
+
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+            .refresh-btn {
+
+                width: 100%;
+            }
+
+            .order-card {
+
+                padding: 18px;
+            }
+
+            .order-top {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+
+            .order-bottom {
+
+                gap: 10px;
+            }
+
+            .order-item {
+
+                flex-wrap: wrap;
+            }
+
+            .food-price {
+
+                margin-left: auto;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav>
+
+        <div class="logo">
+
+            🍴 Tasty<span>Bites</span>
+
+        </div>
+
+        <div class="nav-links">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="menu.html">
+                Menu
+            </a>
+
+            <a href="cart.html">
+                🛒 Cart
+            </a>
+
+            <a href="my-orders.html">
+                📦 My Orders
+            </a>
+
+            <a href="contact.html">
+                Order
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <div class="container">
+
+
+        <!-- ================= HEADER ================= -->
+
+        <div class="page-header">
+
+            <div class="page-icon">
+
+                📦
+
+            </div>
+
+            <h1>
+
+                My <span>Orders</span>
+
+            </h1>
+
+            <div class="line"></div>
+
+            <p>
+
+                Track all your Tasty Bites orders in one place ❤️
+
+            </p>
+
+        </div>
+
+
+        <!-- ================= CUSTOMER INFO ================= -->
+
+        <div
+            class="customer-info"
+            id="customerInfo"
+        >
+
+            <div>
+
+                <h3 id="customerName">
+
+                    Welcome! 👋
+
+                </h3>
+
+                <p id="customerPhone">
+
+                    Loading customer details...
+
+                </p>
+
+            </div>
+
+            <button
+                class="refresh-btn"
+                onclick="loadOrders()"
+            >
+
+                🔄 Refresh Orders
+
+            </button>
+
+        </div>
+
+
+        <!-- ================= ORDERS ================= -->
+
+        <div id="ordersContainer">
+
+            <div class="loading">
+
+                ⏳ Loading your orders...
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+
+        /* ==================================================
+           RESTAURANT NAMES
+        ================================================== */
+
+        const restaurants = {
+
+            1: "Spice Garden",
+
+            2: "Food Corner",
+
+            3: "Urban Spice"
+
+        };
+
+
+        /* ==================================================
+           GET LOGGED IN CUSTOMER
+        ================================================== */
+
+        function getLoggedInCustomer() {
+
+            const customer =
+                localStorage.getItem(
+                    "loggedInCustomer"
+                );
+
+
+            if (!customer) {
+
+                return null;
+
+            }
+
+
+            try {
+
+                return JSON.parse(
+                    customer
+                );
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Customer data error:",
+                    error
+                );
+
+                return null;
+
+            }
+
+        }
+
+
+        /* ==================================================
+           STATUS CLASS
+        ================================================== */
+
+        function getStatusClass(status) {
+
+            if (!status) {
+
+                return "pending";
+
+            }
+
+
+            const value =
+                status.toLowerCase();
+
+
+            if (
+                value === "preparing"
+            ) {
+
+                return "preparing";
+
+            }
+
+
+            if (
+                value === "ready"
+            ) {
+
+                return "ready";
+
+            }
+
+
+            if (
+                value === "out for delivery"
+            ) {
+
+                return "out";
+
+            }
+
+
+            if (
+                value === "delivered"
+            ) {
+
+                return "delivered";
+
+            }
+
+
+            return "pending";
+
+        }
+
+
+        /* ==================================================
+           LOAD ORDERS
+        ================================================== */
+
+        async function loadOrders() {
+
+            const customer =
+                getLoggedInCustomer();
+
+
+            const container =
+                document.getElementById(
+                    "ordersContainer"
+                );
+
+
+            /* ==============================================
+               CHECK LOGIN
+            ============================================== */
+
+            if (!customer) {
+
+                container.innerHTML = `
+
+                    <div class="empty-box">
+
+                        <div class="icon">
+                            🔐
+                        </div>
+
+                        <h2>
+                            Please Login First
+                        </h2>
+
+                        <p>
+                            Login to view your orders.
+                        </p>
+
+                        <a
+                            href="customer-login.html"
+                            class="menu-btn"
+                        >
+                            🔑 Login
+                        </a>
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+            /* ==============================================
+               DISPLAY CUSTOMER
+            ============================================== */
+
+            document.getElementById(
+                "customerName"
+            ).innerText =
+
+                "Hello, "
+                + (
+                    customer.name
+                    || customer.username
+                    || "Customer"
+                )
+                + "! 👋";
+
+
+            document.getElementById(
+                "customerPhone"
+            ).innerText =
+
+                "📱 "
+                + (
+                    customer.phone
+                    || "Phone number not available"
+                );
+
+
+            /* ==============================================
+               PHONE CHECK
+            ============================================== */
+
+            if (!customer.phone) {
+
+                container.innerHTML = `
+
+                    <div class="error-box">
+
+                        ❌ Customer phone number
+                        is not available in login data.
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+            /* ==============================================
+               FETCH CUSTOMER ORDERS
+            ============================================== */
+
+            container.innerHTML = `
+
+                <div class="loading">
+
+                    ⏳ Loading your orders...
+
+                </div>
+
+            `;
+
+
+            try {
+
+                const response =
+                    await fetch(
+
+                        "http://localhost:8085/api/orders/customer/"
+                        + encodeURIComponent(
+                            customer.phone
+                        )
+
+                    );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Unable to fetch orders"
+                    );
+
+                }
+
+
+                const orders =
+                    await response.json();
+
+
+                console.log(
+                    "Customer Orders:",
+                    orders
+                );
+
+
+                displayOrders(
+                    orders
+                );
+
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    error
+                );
+
+
+                container.innerHTML = `
+
+                    <div class="error-box">
+
+                        ❌ Unable to load orders.
+
+                        <br><br>
+
+                        Make sure OrderService,
+                        Eureka and API Gateway
+                        are running.
+
+                    </div>
+
+                `;
+
+            }
+
+        }
+
+
+        /* ==================================================
+           DISPLAY ORDERS
+        ================================================== */
+
+        function displayOrders(orders) {
+
+
+            const container =
+                document.getElementById(
+                    "ordersContainer"
+                );
+
+
+            /* ==============================================
+               NO ORDERS
+            ============================================== */
+
+            if (
+                !orders ||
+                orders.length === 0
+            ) {
+
+                container.innerHTML = `
+
+                    <div class="empty-box">
+
+                        <div class="icon">
+                            🍽️
+                        </div>
+
+                        <h2>
+                            No Orders Yet
+                        </h2>
+
+                        <p>
+                            You haven't placed any
+                            orders yet.
+                        </p>
+
+                        <a
+                            href="menu.html"
+                            class="menu-btn"
+                        >
+                            🍴 Explore Menu
+                        </a>
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+            /* ==============================================
+               SORT NEWEST FIRST
+            ============================================== */
+
+            orders.sort(
+                (a, b) =>
+                    Number(b.id)
+                    -
+                    Number(a.id)
+            );
+
+
+            let html = "";
+
+
+            orders.forEach(
+                order => {
+
+
+                    const status =
+                        order.status
+                        || "Pending";
+
+
+                    const statusClass =
+                        getStatusClass(
+                            status
+                        );
+
+
+                    const restaurantName =
+                        restaurants[
+                            Number(
+                                order.restaurantId
+                            )
+                        ]
+                        || "Restaurant";
+
+
+                    /* ======================================
+                       ORDER ITEMS
+                    ====================================== */
+
+                    let itemsHTML = "";
+
+
+                    if (
+                        order.orderItems
+                        &&
+                        order.orderItems.length > 0
+                    ) {
+
+
+                        order.orderItems.forEach(
+                            item => {
+
+
+                                const subtotal =
+                                    Number(
+                                        item.subtotal
+                                    )
+                                    || 0;
+
+
+                                const quantity =
+                                    Number(
+                                        item.quantity
+                                    )
+                                    || 1;
+
+
+                                itemsHTML += `
+
+                                    <div class="order-item">
+
+                                        <span class="food-name">
+
+                                            🍴
+                                            ${escapeHTML(
+                                                item.foodName
+                                            )}
+
+                                        </span>
+
+                                        <span class="food-quantity">
+
+                                            × ${quantity}
+
+                                        </span>
+
+                                        <span class="food-price">
+
+                                            ₹${subtotal}
+
+                                        </span>
+
+                                    </div>
+
+                                `;
+
+                            }
+                        );
+
+                    }
+
+                    else {
+
+
+                        /* ==================================
+                           OLD ORDERS WITHOUT ITEMS
+                        ================================== */
+
+                        itemsHTML = `
+
+                            <div class="order-item">
+
+                                <span class="food-name">
+
+                                    🍴
+                                    ${escapeHTML(
+                                        order.foodName
+                                        || "Food Order"
+                                    )}
+
+                                </span>
+
+                                <span class="food-quantity">
+
+                                    ×
+                                    ${order.quantity || 1}
+
+                                </span>
+
+                                <span class="food-price">
+
+                                    ₹
+                                    ${Number(
+                                        order.totalPrice
+                                    ) || 0}
+
+                                </span>
+
+                            </div>
+
+                        `;
+
+                    }
+
+
+                    /* ======================================
+                       DELIVERY DETAILS
+                    ====================================== */
+
+                    let deliveryHTML = "";
+
+
+                    if (
+                        order.deliveryDate
+                        &&
+                        order.deliveryTime
+                    ) {
+
+
+                        deliveryHTML = `
+
+                            <div class="delivery-box">
+
+                                <h4>
+
+                                    🚚 Delivery Information
+
+                                </h4>
+
+                                <p>
+
+                                    📅 Delivery Date:
+                                    ${escapeHTML(
+                                        order.deliveryDate
+                                    )}
+
+                                </p>
+
+                                <p>
+
+                                    ⏰ Delivery Time:
+                                    ${escapeHTML(
+                                        order.deliveryTime
+                                    )}
+
+                                </p>
+
+                                ${
+                                    order.deliveryDurationMinutes
+                                    ?
+                                    `
+                                    <p>
+
+                                        ⏱️ Duration:
+                                        ${order.deliveryDurationMinutes}
+                                        minutes
+
+                                    </p>
+                                    `
+                                    :
+                                    ""
+                                }
+
+                            </div>
+
+                        `;
+
+                    }
+
+
+                    /* ======================================
+                       ADDRESS
+                    ====================================== */
+
+                    const addressHTML =
+                        order.address
+
+                        ?
+
+                        `
+
+                            <div class="address-box">
+
+                                📍
+
+                                <strong>
+
+                                    Delivery Address:
+
+                                </strong>
+
+                                ${escapeHTML(
+                                    order.address
+                                )}
+
+                            </div>
+
+                        `
+
+                        :
+
+                        "";
+
+
+                    /* ======================================
+                       COMPLETE ORDER CARD
+                    ====================================== */
+
+                    html += `
+
+                        <div class="order-card">
+
+
+                            <div class="order-top">
+
+                                <div class="order-id">
+
+                                    Order
+
+                                    <span>
+
+                                        #${order.id}
+
+                                    </span>
+
+                                </div>
+
+
+                                <div
+                                    class="status ${statusClass}"
+                                >
+
+                                    ${escapeHTML(
+                                        status
+                                    )}
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="restaurant-info">
+
+                                🏪
+
+                                <strong>
+
+                                    ${escapeHTML(
+                                        restaurantName
+                                    )}
+
+                                </strong>
+
+                            </div>
+
+
+                            <div class="items-title">
+
+                                🍽️ Ordered Items
+
+                            </div>
+
+
+                            ${itemsHTML}
+
+
+                            <div class="order-bottom">
+
+                                <span class="total-label">
+
+                                    💰 Total Amount
+
+                                </span>
+
+                                <span class="total-price">
+
+                                    ₹${Number(
+                                        order.totalPrice
+                                    ) || 0}
+
+                                </span>
+
+                            </div>
+
+
+                            ${deliveryHTML}
+
+
+                            ${addressHTML}
+
+
+                        </div>
+
+                    `;
+
+                }
+            );
+
+
+            container.innerHTML =
+                html;
+
+        }
+
+
+        /* ==================================================
+           ESCAPE HTML
+        ================================================== */
+
+        function escapeHTML(value) {
+
+
+            if (
+                value === null
+                ||
+                value === undefined
+            ) {
+
+                return "";
+
+            }
+
+
+            return String(value)
+
+                .replace(
+                    /&/g,
+                    "&amp;"
+                )
+
+                .replace(
+                    /</g,
+                    "&lt;"
+                )
+
+                .replace(
+                    />/g,
+                    "&gt;"
+                )
+
+                .replace(
+                    /"/g,
+                    "&quot;"
+                )
+
+                .replace(
+                    /'/g,
+                    "&#039;"
+                );
+
+        }
+
+
+        /* ==================================================
+           INITIAL LOAD
+        ================================================== */
+
+        loadOrders();
+
+    </script>
+
+
+</body>
+
+</html>

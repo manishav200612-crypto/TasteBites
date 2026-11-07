@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Tasty Bites | Orders</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            font-family: "Segoe UI", Arial, sans-serif;
+
+            min-height: 100vh;
+
+            padding: 40px 20px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fffaf3,
+                    #f6e5cf
+                );
+
+            color: #222;
+
+            overflow-x: hidden;
+        }
+
+
+        .container {
+
+            max-width: 1100px;
+
+            width: 100%;
+
+            margin: auto;
+        }
+
+
+        /* ================= HEADER ================= */
+
+        .header {
+
+            text-align: center;
+
+            margin-bottom: 35px;
+        }
+
+
+        .header h1 {
+
+            font-size: 34px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .header h1 span {
+
+            color: #ff9800;
+        }
+
+
+        .header p {
+
+            color: #777;
+        }
+
+
+        /* ================= ORDERS BOX ================= */
+
+        .orders-box {
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 20px;
+
+            box-shadow:
+                0 15px 40px
+                rgba(80, 50, 20, 0.12);
+
+            overflow-x: auto;
+        }
+
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 950px;
+        }
+
+
+        th {
+
+            background: #ff9800;
+
+            color: white;
+
+            padding: 14px;
+
+            text-align: left;
+        }
+
+
+        td {
+
+            padding: 14px;
+
+            border-bottom:
+                1px solid #eee;
+        }
+
+
+        tr:hover {
+
+            background: #fff8ed;
+        }
+
+
+        /* ================= STATUS DROPDOWN ================= */
+
+        .status-select {
+
+            padding: 7px 12px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 20px;
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            outline: none;
+
+            background: #fff3cd;
+
+            color: #856404;
+        }
+
+
+        .status-select:focus {
+
+            border-color: #ff9800;
+        }
+
+
+        /* ================= DELETE BUTTON ================= */
+
+        .delete-btn {
+
+            border: none;
+
+            background: #e53935;
+
+            color: white;
+
+            padding: 8px 14px;
+
+            border-radius: 20px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+        }
+
+
+        .delete-btn:hover {
+
+            background: #c62828;
+        }
+
+
+        /* ================= MESSAGE ================= */
+
+        #message {
+
+            text-align: center;
+
+            margin-top: 25px;
+
+            color: #777;
+        }
+
+
+        /* ================= BACK BUTTON ================= */
+
+        .back-btn {
+
+            display: inline-block;
+
+            margin-top: 25px;
+
+            padding: 12px 22px;
+
+            background: #222;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 25px;
+        }
+
+
+        .back-btn:hover {
+
+            background: #ff9800;
+        }
+
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 600px) {
+
+            body {
+
+                padding: 25px 10px;
+            }
+
+
+            .orders-box {
+
+                padding: 15px;
+            }
+
+
+            .header h1 {
+
+                font-size: 28px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="container">
+
+
+        <!-- ================= HEADER ================= -->
+
+        <div class="header">
+
+            <h1>
+                🍴 Tasty <span>Bites</span>
+            </h1>
+
+            <p>
+                Restaurant Order Management
+            </p>
+
+        </div>
+
+
+
+        <!-- ================= ORDERS TABLE ================= -->
+
+        <div class="orders-box">
+
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>Customer</th>
+
+                        <th>Phone</th>
+
+                        <th>Food</th>
+
+                        <th>Items</th>
+
+                        <th>Quantity</th>
+
+                        <th>Total</th>
+
+                        <th>Address</th>
+
+                        <th>Status</th>
+
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="ordersTable">
+
+                </tbody>
+
+            </table>
+
+
+        </div>
+
+
+
+        <!-- ================= MESSAGE ================= -->
+
+        <p id="message">
+
+            Loading orders...
+
+        </p>
+
+
+
+        <!-- ================= BACK BUTTON ================= -->
+
+        <div style="text-align:center;">
+
+            <a
+                href="menu.html"
+                class="back-btn"
+            >
+                ← Back to Menu
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+
+    <script>
+
+
+        /* ==================================================
+           GET ALL ORDERS
+        ================================================== */
+
+        function loadOrders() {
+
+
+            fetch(
+                "http://localhost:8085/api/orders"
+            )
+
+
+            .then(response => {
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Failed to load orders"
+                    );
+
+                }
+
+
+                return response.json();
+
+            })
+
+
+            .then(orders => {
+
+
+                const table =
+                    document.getElementById(
+                        "ordersTable"
+                    );
+
+
+                table.innerHTML = "";
+
+
+                if (orders.length === 0) {
+
+
+                    document.getElementById(
+                        "message"
+                    ).innerText =
+                        "No orders found.";
+
+
+                    return;
+
+                }
+
+
+                document.getElementById(
+                    "message"
+                ).innerText =
+                    orders.length +
+                    " order(s) found";
+
+
+
+                orders.forEach(order => {
+
+
+                    const row =
+                        document.createElement(
+                            "tr"
+                        );
+
+
+                    row.innerHTML = `
+
+                        <td>
+                            ${order.id}
+                        </td>
+
+
+                        <td>
+                            ${order.customerName}
+                        </td>
+
+
+                        <td>
+                            ${order.phone}
+                        </td>
+
+
+                        <td>
+                            ${order.foodName}
+                        </td>
+
+
+                        <td>
+                            ${order.orderItems && order.orderItems.length > 0
+                                ? order.orderItems.map(item =>
+                                    `${item.foodName} × ${item.quantity} (₹${item.subtotal})`
+                                  ).join("<br>")
+                                : "—"}
+                        </td>
+
+
+                        <td>
+                            ${order.quantity}
+                        </td>
+
+
+                        <td>
+                            ₹${order.totalPrice}
+                        </td>
+
+
+                        <td>
+                            ${order.address}
+                        </td>
+
+
+                        <td>
+
+                            <select
+                                class="status-select"
+                                onchange="updateStatus(
+                                    ${order.id},
+                                    this.value
+                                )"
+                            >
+
+                                <option
+                                    value="Pending"
+                                    ${order.status === "Pending" ? "selected" : ""}
+                                >
+                                    Pending
+                                </option>
+
+
+                                <option
+                                    value="Confirmed"
+                                    ${order.status === "Confirmed" ? "selected" : ""}
+                                >
+                                    Confirmed
+                                </option>
+
+
+                                <option
+                                    value="Preparing"
+                                    ${order.status === "Preparing" ? "selected" : ""}
+                                >
+                                    Preparing
+                                </option>
+
+
+                                <option
+                                    value="Out for Delivery"
+                                    ${order.status === "Out for Delivery" ? "selected" : ""}
+                                >
+                                    Out for Delivery
+                                </option>
+
+
+                                <option
+                                    value="Delivered"
+                                    ${order.status === "Delivered" ? "selected" : ""}
+                                >
+                                    Delivered
+                                </option>
+
+                            </select>
+
+                        </td>
+
+
+                        <td>
+
+                            <button
+                                class="delete-btn"
+                                onclick="deleteOrder(${order.id})"
+                            >
+
+                                🗑️ Delete
+
+                            </button>
+
+                        </td>
+
+                    `;
+
+
+                    table.appendChild(row);
+
+
+                });
+
+
+            })
+
+
+            .catch(error => {
+
+
+                console.error(
+                    "Error:",
+                    error
+                );
+
+
+                document.getElementById(
+                    "message"
+                ).innerText =
+                    "❌ Unable to load orders.";
+
+
+            });
+
+        }
+
+
+
+        /* ==================================================
+           UPDATE ORDER STATUS
+        ================================================== */
+
+        function updateStatus(id, newStatus) {
+
+
+            fetch(
+                `http://localhost:8085/api/orders/${id}`,
+                {
+
+                    method: "PUT",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body: JSON.stringify({
+
+                        status: newStatus
+
+                    })
+
+                }
+            )
+
+
+            .then(response => {
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Status update failed"
+                    );
+
+                }
+
+
+                return response.json();
+
+            })
+
+
+            .then(order => {
+
+
+                alert(
+                    "✅ Order status updated to " +
+                    order.status
+                );
+
+
+                loadOrders();
+
+            })
+
+
+            .catch(error => {
+
+
+                console.error(
+                    "Status Update Error:",
+                    error
+                );
+
+
+                alert(
+                    "❌ Unable to update order status."
+                );
+
+
+                loadOrders();
+
+            });
+
+        }
+
+
+
+        /* ==================================================
+           DELETE ORDER
+        ================================================== */
+
+        function deleteOrder(id) {
+
+
+            const confirmDelete =
+                confirm(
+                    "Are you sure you want to delete this order?"
+                );
+
+
+            if (!confirmDelete) {
+
+                return;
+
+            }
+
+
+            fetch(
+                `http://localhost:8085/api/orders/${id}`,
+                {
+
+                    method: "DELETE"
+
+                }
+            )
+
+
+            .then(response => {
+
+
+                if (
+                    response.status === 200 ||
+                    response.status === 204
+                ) {
+
+
+                    alert(
+                        "✅ Order deleted successfully!"
+                    );
+
+
+                    loadOrders();
+
+
+                } else {
+
+
+                    throw new Error(
+                        "Delete failed. Status: " +
+                        response.status
+                    );
+
+                }
+
+            })
+
+
+            .catch(error => {
+
+
+                console.error(
+                    "Delete Error:",
+                    error
+                );
+
+
+                alert(
+                    "❌ Unable to delete order."
+                );
+
+            });
+
+        }
+
+
+
+        /* ==================================================
+           LOAD ORDERS WHEN PAGE OPENS
+        ================================================== */
+
+        loadOrders();
+
+
+    </script>
+
+
+</body>
+
+</html>
